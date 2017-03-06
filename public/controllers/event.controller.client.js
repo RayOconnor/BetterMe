@@ -8,6 +8,7 @@
     vm.createEvent = createEvent;
     vm.updateEvent = updateEvent;
     vm.editEvent = editEvent;
+    vm.dropEvent = dropEvent;
 
     function init() {
       EventService
@@ -18,25 +19,28 @@
 
     function populateEvents(events) {
       vm.events = events;
-      vm.editedEvent = {title: "bob"};
     }
 
     function editEvent() {
       $('#fullCalModal').modal();
     }
+    
+    function dropEvent(event) {
+      EventService.createEvent(event);
+    }
 
     function createEvent(start, end, calendar) {
       var title = prompt('Event Title:');
       if (title) {
-        editEvent({
+        var editedEvent = {
           title: title,
           start: start,
           end: end,
           allDay: false
-        });
-        
-        calendar.fullCalendar('renderEvent', event);
-        EventService.createEvent(event);
+        };
+
+        calendar.fullCalendar('renderEvent', editedEvent);
+        EventService.createEvent(editedEvent);
       }
       calendar.fullCalendar('unselect');
     }

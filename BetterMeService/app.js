@@ -1,5 +1,5 @@
 module.exports = function(app) {
-  require('./models/event/event.model.server')(app);
+  var EventSchema = require('./models/event/event.model.server')(app);
 
   var connectionString = 'mongodb://127.0.0.1:27017/betterme';
 

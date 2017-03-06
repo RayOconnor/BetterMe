@@ -26,6 +26,7 @@
   <script src="./services/event.service.client.js"></script>
   <script src="./controllers/event.controller.client.js"></script>
   <script src="./directives/customFullCalendar.js"></script>
+  <script src="./directives/droppableEvent.js"></script>
 
 
 </head>
@@ -35,11 +36,6 @@
   <div class="row">
 
     <div class="col-sm-12 col-md-10">
-      <ul>
-        <li ng-repeat="event in model.events">
-          <span>{{event}}</span>
-        </li>
-      </ul>
       <div class="row fullCalendar">
         <div custom-full-calendar=""></div>
       </div>
@@ -47,12 +43,13 @@
     <div class="hidden-xs hidden-sm col-md-2">
       <h3>Regimens</h3>
       <div class="regimen-bank">
-
+        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Gym"}'>Gym</div>
+        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Work On Better Me"}'>Work On Better Me</div>
+        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Cook"}'>Cook</div>
+        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Email Tom"}'>Email Tom</div>
       </div>
     </div>
   </div>
-
-
 
   <div id="fullCalModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -64,8 +61,8 @@
                  class="form-control"
                  type="text"
                  placeholder="Name">
-
-        <div>
+          <a ng-click="model.updateEvent(model.editedEvent)" data-dismiss="modal" class="btn btn-default btn-primary btn-block" role="button">UpdateEvent</a>
+        </div>
       </div>
     </div>
   </div>

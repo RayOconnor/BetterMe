@@ -5,11 +5,7 @@
   
   function customFullCalendarDir() {
     function linkFunc(scope, element) {
-      var date = new Date();
-      var d = date.getDate();
-      var m = date.getMonth();
-      var y = date.getFullYear();
-
+      
       scope.$watch('model.events', function(events){
         if (events) {
           var calendar = element.fullCalendar(
@@ -50,11 +46,17 @@
                editable: true allow user to edit events.
                */
               editable: true,
+              droppable: true,
+              drop: function(date) {
+                var droppedEvent = JSON.parse(this.dataset.event);
+                droppedEvent.start = date;
+                scope.model.dropEvent(droppedEvent);
+              },
               /*
                events is the main option for calendar.
                for demo we have added predefined events in json object.
                */
-              events: scope.model.events,
+              events: events,
               eventClick: function (event) {
                 scope.model.editedEvent = sanitizeEvent(event);
                 scope.$apply();
@@ -63,6 +65,7 @@
               eventDrop: scope.model.updateEvent,
               eventResize: scope.model.updateEvent
             });
+          scope.model.calendar = calendar;
         }
       });
 
@@ -71,7 +74,7 @@
       link: linkFunc
     };
 
-    function sanitizeEvent (event) {
+    function sanitizeEvent(event) {
       return {
         _id: event._id,
         title: event.title,
