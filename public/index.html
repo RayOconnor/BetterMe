@@ -1,10 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="BetterMe">
 <head>
-    <meta charset="UTF-8">
-    <title>Web Dev Course Home Page</title>
+  <meta charset="UTF-8">
+  <title>Web Dev Course Home Page</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css">
+  <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="css/style.css" rel="stylesheet"/>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+          integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+          crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
+
+  <script src="app.js"></script>
+  <script src="./services/event.service.client.js"></script>
+  <script src="./controllers/event.controller.client.js"></script>
+  <script src="./directives/customFullCalendar.js"></script>
+
+
 </head>
-<body>
-    <h1>BetterMe</h1>
+<body class="container-fluid" ng-controller ="EventController as model">
+  <h2>BetterMe</h2>
+
+  <div class="row">
+
+    <div class="col-sm-12 col-md-10">
+      <ul>
+        <li ng-repeat="event in model.events">
+          <span>{{event}}</span>
+        </li>
+      </ul>
+      <div class="row fullCalendar">
+        <div custom-full-calendar=""></div>
+      </div>
+    </div>
+    <div class="hidden-xs hidden-sm col-md-2">
+      <h3>Regimens</h3>
+      <div class="regimen-bank">
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="fullCalModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="container-fluid">
+          <label>Title</label>
+          <input id ="modal-event-title"
+                 ng-model="model.editedEvent.title"
+                 class="form-control"
+                 type="text"
+                 placeholder="Name">
+
+        <div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

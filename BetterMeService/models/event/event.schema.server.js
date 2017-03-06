@@ -5,9 +5,9 @@ module.exports = function () {
     title: {type: String, required: true},
     start: {type: Date, required: true},
     end: Date,
-    allDay: String,
+    allDay: Boolean,
     color: String
-  }, {collection: 'betterme.event'});
+  }, {collection: 'event'});
 
   return EventSchema;
 };
