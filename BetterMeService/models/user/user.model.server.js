@@ -4,6 +4,8 @@ module.exports = function () {
     createUser: createUser,
     findUserById: findUserById,
     addEventToUser: addEventToUser,
+    addInviteToSender: addInviteToSender,
+    addInviteToReceiver: addInviteToReceiver,
     findUserByEmail: findUserByEmail,
     findUserByCredentials: findUserByCredentials,
     updateUser: updateUser,
@@ -42,6 +44,40 @@ module.exports = function () {
     return d.promise;
   }
 
+  function addInviteToSender(invite) {
+    var d = q.defer();
+
+    UserModel
+      .findById(invite._sender, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.sentInvites.push(invite._id);
+          user.save();
+          d.resolve(event);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function addInviteToReceiver(invite) {
+    var d = q.defer();
+
+    UserModel
+      .findById(invite._recipient, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.receivedInvites.push(invite._id);
+          user.save();
+          d.resolve(event);
+        }
+      });
+
+    return d.promise;
+  }
+  
   function findUserById(userId) {
     var d = q.defer();
 
