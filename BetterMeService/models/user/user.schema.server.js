@@ -16,7 +16,9 @@ module.exports = function () {
     scheduledEvents: [{type: ObjectId, ref: 'EventModel'}],
     bankedEvents: [{type: ObjectId, ref: 'EventModel'}],
     coachedRegimens: [{type: ObjectId, ref: 'RegimenModel'}],
-    enlistedRegimens: [{type: ObjectId, ref: 'RegimenModel'}]
+    enlistedRegimens: [{type: ObjectId, ref: 'RegimenModel'}],
+    sentInvites: [{type: ObjectId, ref: 'InviteModel'}],
+    receivedInvites: [{type: ObjectId, ref: 'InviteModel'}]
   }, {collection: 'user'});
 
   return UserSchema;
