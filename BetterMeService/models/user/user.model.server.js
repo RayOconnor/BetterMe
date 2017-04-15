@@ -54,7 +54,7 @@ module.exports = function () {
         } else {
           user.sentInvites.push(invite._id);
           user.save();
-          d.resolve(event);
+          d.resolve();
         }
       });
 
@@ -71,7 +71,7 @@ module.exports = function () {
         } else {
           user.receivedInvites.push(invite._id);
           user.save();
-          d.resolve(event);
+          d.resolve();
         }
       });
 

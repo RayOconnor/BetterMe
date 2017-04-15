@@ -9,13 +9,14 @@ module.exports = function (app, InviteModel, UserModel) {
     InviteModel
       .createInvite(newInvite)
       .then(function(invite) {
-        return UserModel.addInviteToSender(invite);
+        newInvite = invite;
+        return UserModel.addInviteToSender(newInvite);
       })
-      .then(function(invite) {
-        return UserModel.addInviteToReceiver(invite);
+      .then(function() {
+        return UserModel.addInviteToReceiver(newInvite);
       })
-      .then(function(invite) {
-        res.json(invite.toObject());
+      .then(function() {
+        res.json(newInvite.toObject());
       });
   }
 
