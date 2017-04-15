@@ -4,7 +4,6 @@ module.exports = function () {
     createRegimen: createRegimen,
     findRegimenById: findRegimenById,
     getRegimensForCoach: getRegimensForCoach,
-    addRegimenToUsersCoachedRegimens: addRegimenToUsersCoachedRegimens,
     updateRegimen: updateRegimen,
     deleteRegimen: deleteRegimen
   };
@@ -19,23 +18,6 @@ module.exports = function () {
 
   function createRegimen(regimen) {
     return RegimenModel.create(regimen);
-  }
-
-  function addRegimenToUsersCoachedRegimens(regimen) {
-    var d = q.defer();
-
-    RegimenModel
-      .findById(regimen._coach, function (err, coach) {
-        if(err) {
-          d.reject(err);
-        } else {
-          coach.coachedRegimens.push(regimen._id);
-          coach.save();
-          d.resolve(regimen);
-        }
-      });
-
-    return d.promise;
   }
 
   function findRegimenById(regimenId) {
@@ -72,7 +54,7 @@ module.exports = function () {
     var d = q.defer();
 
     RegimenModel
-      .findOneAndUpdate({'_id': regimenId}, regimen, function (err, regimen) {
+      .findOneAndUpdate({'_id': regimenId}, regimen, {new: true}, function (err, regimen) {
         if(err) {
           d.reject(err);
         } else {

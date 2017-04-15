@@ -72,7 +72,7 @@ module.exports = function () {
     var d = q.defer();
 
     EventModel
-      .findOneAndUpdate({'_id': eventId}, event, function (err, event) {
+      .findOneAndUpdate({'_id': eventId}, event, {new: true}, function (err, event) {
         if(err) {
           d.reject(err);
         } else {

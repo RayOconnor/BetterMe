@@ -6,6 +6,7 @@ module.exports = function () {
     addEventToUser: addEventToUser,
     addInviteToSender: addInviteToSender,
     addInviteToReceiver: addInviteToReceiver,
+    addRegimenToUsersCoachedRegimens: addRegimenToUsersCoachedRegimens,
     findUserByEmail: findUserByEmail,
     findUserByCredentials: findUserByCredentials,
     updateUser: updateUser,
@@ -38,6 +39,23 @@ module.exports = function () {
           user.events.push(event._id);
           user.save();
           d.resolve(event);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function addRegimenToUsersCoachedRegimens(regimen) {
+    var d = q.defer();
+
+    UserModel
+      .findById(regimen._coach, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.coachedRegimens.push(regimen._id);
+          user.save();
+          d.resolve(regimen);
         }
       });
 
@@ -127,11 +145,11 @@ module.exports = function () {
     var d = q.defer();
 
     UserModel
-      .findOneAndUpdate({'_id': userId}, user, function (err, user) {
+      .findOneAndUpdate({_id: userId}, user, {new: true}, function (err, updatedUser) {
         if(err) {
           d.reject(err);
         } else {
-          d.resolve(user);
+          d.resolve(updatedUser);
         }
       });
 
@@ -152,4 +170,5 @@ module.exports = function () {
 
     return d.promise;
   }
+
 };

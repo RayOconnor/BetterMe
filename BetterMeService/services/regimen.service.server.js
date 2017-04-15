@@ -14,6 +14,9 @@ module.exports = function (app, RegimenModel, UserModel) {
       })
       .then(function() {
         res.json(newRegimen.toObject());
+      })
+      .catch(function(error) {
+        res.sendStatus(500).send(error);;
       });
   }
 

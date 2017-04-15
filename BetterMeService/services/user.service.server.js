@@ -53,7 +53,7 @@ module.exports = function (app, userModel) {
       .then(function(user) {
         res.json(user);
       }, function (error) {
-        res.sendStatus(404).send(error);
+        res.sendStatus(500).send(error);
       });
 
   }
@@ -79,7 +79,6 @@ module.exports = function (app, userModel) {
     } else if(email) {
       findUserByEmail(email, req, res);
     }
-    return;
   }
 
   function findUserByEmail(email, req, res) {
@@ -110,7 +109,7 @@ module.exports = function (app, userModel) {
     userModel
       .updateUser(userId, newUser)
       .then(function(user) {
-        res.json(user);
+        res.json(user.toObject());
       }, function (error) {
         res.sendStatus(500).send(error);
       });
@@ -127,4 +126,4 @@ module.exports = function (app, userModel) {
       });
   }
 
-}
+};

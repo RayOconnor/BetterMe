@@ -38,7 +38,7 @@ module.exports = function () {
     var d = q.defer();
 
     InviteModel
-      .findOneAndUpdate({'_id': inviteId}, invite, function (err, invite) {
+      .findOneAndUpdate({'_id': inviteId}, invite, {new: true}, function (err, invite) {
         if(err) {
           d.reject(err);
         } else {
