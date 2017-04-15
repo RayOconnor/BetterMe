@@ -1,26 +1,42 @@
-module.exports = function (app, EventModel) {
-  app.post("/api/event", createEvent);
-  app.get("/api/event", getEvents)
-  
-  var date = new Date();
-  var d = date.getDate();
-  var m = date.getMonth();
-  var y = date.getFullYear();
+module.exports = function (app, EventModel, UserModel) {
+  app.post("/api/event/user/:userId", createEventForUser);
+  //app.get("/api/event", getEvents);
+  app.get("/api/event/user/:userId", getEventsForUser);
+  app.put("/api/event/:eventId", updateEvent);
 
-  /*
-  var events = [
-    { title: 'All Day Event', start: new Date(y, m, 1)},
-    { title: 'Long Event', start: new Date(y, m, d-5), end: new Date(y, m, d-2)},
-    { id: 999, title: 'Repeating Event', start: new Date(y, m, d-3, 16, 0), allDay: false }
-  ];
-  */
-
-  function createEvent(req, res) {
-    res.json(EventModel.createEvent(req.params.body));
+  function createEventForUser(req, res) {
+    var newEvent = req.body;
+    var userId = req.params.userId;
+    newEvent._user = userId;
+    EventModel
+      .createEvent(newEvent)
+      .then(function(event) {
+        return UserModel.addEventToUser(event);
+      })
+      .then(function(event) {
+        res.json(event.toObject());
+      });
   }
-  
-  function getEvents(req, res) {
-    res.json(EventModel.getEvents())
+
+  function getEventsForUser(req, res) {
+    var userId = req.params.userId;
+    EventModel
+      .getEventsForUser(userId)
+      .then(function(events) {
+        res.json(events);
+      })
+  }
+
+  function updateEvent(req, res) {
+    var eventId = req.params.eventId;
+    var updatedEvent = req.body;
+    EventModel
+      .updateEvent(eventId, updatedEvent)
+      .then(function(event) {
+        res.json(event.toObject());
+      }, function (error) {
+        res.sendStatus(500).send(error);
+      });
   }
   
 };

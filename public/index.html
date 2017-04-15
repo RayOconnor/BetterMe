@@ -3,14 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>BetterMe</title>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css">
-  <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link href="css/style.css" rel="stylesheet"/>
-
-
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
           integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
@@ -18,55 +10,36 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
           integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
           crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular-route.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css">
+  <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css">
+  <link href="css/style.css" rel="stylesheet"/>
+
 
   <script src="app.js"></script>
-  <script src="./services/event.service.client.js"></script>
-  <script src="./controllers/event.controller.client.js"></script>
-  <script src="./directives/customFullCalendar.js"></script>
-  <script src="./directives/droppableEvent.js"></script>
+  <script src="config.js"></script>
 
+  <script src="services/user.service.client.js"></script>
+  <script src="services/event.service.client.js"></script>
+
+  <script src="directives/customFullCalendar.js"></script>
+  <script src="directives/droppableEvent.js"></script>
+
+  <script src="views/calendar/controllers/event.controller.client.js"></script>
+  <script src="views/user/controllers/login.controller.client.js"></script>
+  <script src="views/user/controllers/profile.controller.client.js"></script>
+  <script src="views/user/controllers/register.controller.client.js"></script>
 
 </head>
-<body class="container-fluid" ng-controller ="EventController as model">
-  <h2>BetterMe</h2>
-
-  <div class="row">
-
-    <div class="col-sm-12 col-md-10">
-      <div class="row fullCalendar">
-        <div custom-full-calendar=""></div>
-      </div>
-    </div>
-    <div class="hidden-xs hidden-sm col-md-2">
-      <h3>Regimens</h3>
-      <div class="regimen-bank">
-        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Gym"}'>Gym</div>
-        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Work On Better Me"}'>Work On Better Me</div>
-        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Cook"}'>Cook</div>
-        <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Email Tom"}'>Email Tom</div>
-      </div>
-    </div>
-  </div>
-
-  <div id="fullCalModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="container-fluid">
-          <label>Title</label>
-          <input id ="modal-event-title"
-                 ng-model="model.editedEvent.title"
-                 class="form-control"
-                 type="text"
-                 placeholder="Name">
-          <a ng-click="model.updateEvent(model.editedEvent)" data-dismiss="modal" class="btn btn-default btn-primary btn-block" role="button">UpdateEvent</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</body>
+  <body class="container-fluid">
+    <div ng-view></div>
+  </body>
 </html>

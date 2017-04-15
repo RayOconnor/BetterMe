@@ -1,10 +1,12 @@
 (function() {
   angular
     .module("BetterMe")
-    .controller("EventController", EventController);
+    .controller("eventController", EventController);
 
-  function EventController(EventService) {
+  function EventController($routeParams, EventService) {
     var vm = this;
+    vm.userId = $routeParams.uid;
+
     vm.createEvent = createEvent;
     vm.updateEvent = updateEvent;
     vm.editEvent = editEvent;
@@ -12,7 +14,7 @@
 
     function init() {
       EventService
-        .getEvents()
+        .getEventsForUser(vm.userId)
         .success(populateEvents);
     }
     init();
@@ -26,7 +28,7 @@
     }
     
     function dropEvent(event) {
-      EventService.createEvent(event);
+      EventService.createEventForUser(event, vm.userId);
     }
 
     function createEvent(start, end, calendar) {

@@ -6,7 +6,8 @@ module.exports = function () {
     start: {type: Date, required: true},
     end: Date,
     allDay: Boolean,
-    color: String
+    color: String,
+    _user: {type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'}
   }, {collection: 'event'});
 
   return EventSchema;

@@ -1,0 +1,35 @@
+<h2>BetterMe</h2>
+
+<div class="row">
+
+  <div class="col-sm-12 col-md-10">
+    <div class="row fullCalendar">
+      <div custom-full-calendar=""></div>
+    </div>
+  </div>
+  <div class="hidden-xs hidden-sm col-md-2">
+    <h3>Regimens</h3>
+    <div class="regimen-bank">
+      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Gym"}'>Gym</div>
+      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Work On Better Me"}'>Work On Better Me</div>
+      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Cook"}'>Cook</div>
+      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Email Tom"}'>Email Tom</div>
+    </div>
+  </div>
+</div>
+
+<div id="fullCalModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="container-fluid">
+        <label>Title</label>
+        <input id ="modal-event-title"
+               ng-model="model.editedEvent.title"
+               class="form-control"
+               type="text"
+               placeholder="Name">
+        <a ng-click="model.updateEvent(model.editedEvent)" data-dismiss="modal" class="btn btn-default btn-primary btn-block" role="button">UpdateEvent</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,3 +12,45 @@ div.regimen-bank {
 div.banked-event {
   margin: 5px;
 }
+
+input.form-control {
+  margin: 5px 0;
+}
+
+body {
+  padding: 60px 0;
+}
+
+h3.nav-header {
+  display: inline-block;
+}
+
+a.nav-icon {
+  margin-top: 25px;
+  float: right;
+}
+
+a.nav-back-icon {
+  margin-top: 25px;
+}
+
+a.magbtn {
+  margin-top: 5px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+img {
+  width: 100%
+}
+
+a.list-icon {
+  float: right;
+}
+
+a.footer-nav-right-icon {
+  margin-top: 20px;
+  float: right;
+}

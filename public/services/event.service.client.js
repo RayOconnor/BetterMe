@@ -6,19 +6,19 @@
   function eventService($http) {
 
     var api = {
-      "createEvent": createEvent,
-      "getEvents": getEvents,
-      "updateEvent": updateEvent,
-      "deleteEvent": deleteEvent
+      createEventForUser: createEventForUser,
+      getEventsForUser: getEventsForUser,
+      updateEvent: updateEvent,
+      deleteEvent: deleteEvent
     };
     return api;
     
-    function createEvent(event) {
-      return $http.post("/api/event", event);
+    function createEventForUser(event, userId) {
+      return $http.post("/api/event/user/"+userId, event);
     }
     
-    function getEvents(event) {
-      return $http.get("/api/event");
+    function getEventsForUser(userId) {
+      return $http.get("/api/event/user/"+ userId);
     }
 
     function updateEvent(eventId, event) {
