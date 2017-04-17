@@ -3,6 +3,7 @@ module.exports = function (app, EventModel, UserModel) {
   //app.get("/api/event", getEvents);
   app.get("/api/event/user/:userId", getEventsForUser);
   app.put("/api/event/:eventId", updateEvent);
+  app.delete("/api/event/:eventId", deleteEvent);
 
   function createEventForUser(req, res) {
     var newEvent = req.body;
@@ -34,6 +35,17 @@ module.exports = function (app, EventModel, UserModel) {
       .updateEvent(eventId, updatedEvent)
       .then(function(event) {
         res.json(event.toObject());
+      }, function (error) {
+        res.sendStatus(500).send(error);
+      });
+  }
+
+  function deleteEvent(req, res) {
+    var eventId = req.params.eventId;
+    EventModel
+      .deleteEvent(eventId)
+      .then(function(event) {
+        res.json(event);
       }, function (error) {
         res.sendStatus(500).send(error);
       });

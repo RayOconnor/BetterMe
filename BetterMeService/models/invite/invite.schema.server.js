@@ -8,7 +8,7 @@ module.exports = function () {
     _sender: {type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'},
     _recipient: {type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'},
     _regimen: {type: mongoose.Schema.Types.ObjectId, ref: 'RegimenModel'}
-  }, {collection: 'event'});
+  }, {collection: 'invite'});
 
   return InviteSchema;
 };

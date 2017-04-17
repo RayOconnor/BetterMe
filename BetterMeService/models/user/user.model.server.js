@@ -4,9 +4,15 @@ module.exports = function () {
     createUser: createUser,
     findUserById: findUserById,
     addEventToUser: addEventToUser,
+    addInviteToSender: addInviteToSender,
+    addInviteToReceiver: addInviteToReceiver,
+    addRegimenToUsersCoachedRegimens: addRegimenToUsersCoachedRegimens,
+    addRegimenToUsersEnlistedRegimens: addRegimenToUsersEnlistedRegimens,
     findUserByEmail: findUserByEmail,
     findUserByCredentials: findUserByCredentials,
     updateUser: updateUser,
+    removeRegimenFromCoachedRegimens: removeRegimenFromCoachedRegimens,
+    removeRegimenFromEnlistedRegimens: removeRegimenFromEnlistedRegimens,
     deleteUser: deleteUser
   };
 
@@ -42,6 +48,74 @@ module.exports = function () {
     return d.promise;
   }
 
+  function addRegimenToUsersCoachedRegimens(regimen) {
+    var d = q.defer();
+
+    UserModel
+      .findById(regimen._coach, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.coachedRegimens.push(regimen._id);
+          user.save();
+          d.resolve(regimen);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function addRegimenToUsersEnlistedRegimens(userId, regimenId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.enlistedRegimens.push(regimenId);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function addInviteToSender(invite) {
+    var d = q.defer();
+
+    UserModel
+      .findById(invite._sender, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.sentInvites.push(invite._id);
+          user.save();
+          d.resolve();
+        }
+      });
+
+    return d.promise;
+  }
+
+  function addInviteToReceiver(invite) {
+    var d = q.defer();
+
+    UserModel
+      .findById(invite._recipient, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.receivedInvites.push(invite._id);
+          user.save();
+          d.resolve();
+        }
+      });
+
+    return d.promise;
+  }
+  
   function findUserById(userId) {
     var d = q.defer();
 
@@ -91,11 +165,11 @@ module.exports = function () {
     var d = q.defer();
 
     UserModel
-      .findOneAndUpdate({'_id': userId}, user, function (err, user) {
+      .findOneAndUpdate({_id: userId}, user, {new: true}, function (err, updatedUser) {
         if(err) {
           d.reject(err);
         } else {
-          d.resolve(user);
+          d.resolve(updatedUser);
         }
       });
 
@@ -116,4 +190,41 @@ module.exports = function () {
 
     return d.promise;
   }
+
+  function removeRegimenFromCoachedRegimens(regimen) {
+    var d = q.defer();
+
+    UserModel
+      .findById(regimen._coach, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.coachedRegimens.indexOf(regimen._id);
+          user.coachedRegimens.splice(index, 1);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function removeRegimenFromEnlistedRegimens(userId, regimenId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.enlistedRegimens.indexOf(regimenId);
+          user.enlistedRegimens.splice(index, 1);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
 };

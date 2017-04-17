@@ -5,8 +5,10 @@ module.exports = function () {
     findEventById: findEventById,
     getEventsForUser: getEventsForUser,
     createEventForUser: createEventForUser,
+    createEventsFromArray: createEventsFromArray,
     updateEvent: updateEvent,
-    deleteEvent: deleteEvent
+    deleteEvent: deleteEvent,
+    deleteEventsForRegimen: deleteEventsForRegimen
   };
 
   var q = require('q');
@@ -34,6 +36,20 @@ module.exports = function () {
           d.resolve(event);
         }
       });
+
+    return d.promise;
+  }
+
+  function createEventsFromArray(eventArray) {
+    var d = q.defer();
+
+    EventModel.create(eventArray, function (err, events) {
+      if(err) {
+        d.reject(err);
+      } else {
+        d.resolve(events);
+      }
+    });
 
     return d.promise;
   }
@@ -72,7 +88,7 @@ module.exports = function () {
     var d = q.defer();
 
     EventModel
-      .findOneAndUpdate({'_id': eventId}, event, function (err, event) {
+      .findOneAndUpdate({'_id': eventId}, event, {new: true}, function (err, event) {
         if(err) {
           d.reject(err);
         } else {
@@ -97,4 +113,20 @@ module.exports = function () {
 
     return d.promise;
   }
+
+  function deleteEventsForRegimen(regimenId) {
+    var d = q.defer();
+
+    EventModel
+      .remove({_regimen: regimenId}, function (err, status) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(status);
+        }
+      });
+
+    return d.promise;
+  }
+ 
 };
