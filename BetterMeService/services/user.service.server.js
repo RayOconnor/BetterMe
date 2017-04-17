@@ -9,6 +9,7 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
 
   var passport = require('passport');
   var LocalStrategy = require('passport-local').Strategy;
+  var _ = require('underscore');
 
   passport.use(new LocalStrategy(localStrategy));
   passport.serializeUser(serializeUser);
@@ -134,10 +135,18 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
     UserModel
       .addRegimenToUsersEnlistedRegimens(userId, regimenId)
       .then(function() {
-        RegimenModel.addCadetteToRegimen(regimenId, userId);
+        return RegimenModel.addCadetteToRegimen(regimenId, userId);
       })
       .then(function(regimen) {
-        EventModel.createEventsFromArray(createBankedEventsForRegimen(userId, regimen))
+        return EventModel.createEventsFromArray(createBankedEventsForRegimen(userId, regimen))
+      })
+      .then(function(events) {
+        if(events.length > 0) {
+          return UserModel.addEventsToUser(events[0]._user, _.map(events, function(event) {return event._id}));
+        }
+      })
+      .then(function(events) {
+        res.json(events)
       })
       .catch(function(error) {
         res.sendStatus(500).send(error);

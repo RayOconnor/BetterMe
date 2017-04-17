@@ -5,6 +5,8 @@ module.exports = function (app, EventModel, UserModel) {
   app.put("/api/event/:eventId", updateEvent);
   app.delete("/api/event/:eventId", deleteEvent);
 
+  var _ = require('underscore');
+
   function createEventForUser(req, res) {
     var newEvent = req.body;
     var userId = req.params.userId;
@@ -42,11 +44,17 @@ module.exports = function (app, EventModel, UserModel) {
 
   function deleteEvent(req, res) {
     var eventId = req.params.eventId;
+    var eventToBeDeleted = event;
     EventModel
       .deleteEvent(eventId)
       .then(function(event) {
-        res.json(event);
-      }, function (error) {
+        eventToBeDeleted = event;
+        UserModel.removeEventFromUser(event._user, event)
+      })
+      .then(function() {
+        res.json(eventToBeDeleted);
+      })
+      .catch(function (error) {
         res.sendStatus(500).send(error);
       });
   }

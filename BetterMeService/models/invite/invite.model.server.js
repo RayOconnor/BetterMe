@@ -3,6 +3,7 @@ module.exports = function () {
   var api = {
     createInvite: createInvite,
     findInviteById: findInviteById,
+    findInvitesForRegimen: findInvitesForRegimen,
     updateInvite: updateInvite,
     deleteInvite: deleteInvite,
     deleteInvitesForRegimen: deleteInvitesForRegimen,
@@ -35,6 +36,21 @@ module.exports = function () {
 
     return d.promise;
   }
+  
+  function findInvitesForRegimen(regimenId) {
+    var d = q.defer();
+
+    InviteModel
+      .find({_regimen: regimenId}, function (err, regimens) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(regimens);
+        }
+      });
+
+    return d.promise;
+  }
 
   function updateInvite(inviteId, invite) {
     var d = q.defer();
@@ -55,11 +71,11 @@ module.exports = function () {
     var d = q.defer();
 
     InviteModel
-      .remove({'_id': inviteId}, function (err, status) {
+      .findOneAndRemove({'_id': inviteId}, function (err, invite) {
         if(err) {
           d.reject(err);
         } else {
-          d.resolve(status);
+          d.resolve(invite);
         }
       });
 

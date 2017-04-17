@@ -3,6 +3,7 @@ module.exports = function () {
   var api = {
     createEvent: createEvent,
     findEventById: findEventById,
+    findEventsForRegimen: findEventsForRegimen,
     getEventsForUser: getEventsForUser,
     createEventForUser: createEventForUser,
     createEventsFromArray: createEventsFromArray,
@@ -68,6 +69,20 @@ module.exports = function () {
 
     return d.promise;
   }
+  
+  function findEventsForRegimen(regimenId) {
+    var d = q.defer();
+
+    EventModel.find({_regimen: regimenId}, function (err, events) {
+      if(err) {
+        d.reject(err);
+      } else {
+        d.resolve(events);
+      }
+    });
+    
+    return d.promise;
+  }
 
   function getEventsForUser(userId) {
     var d = q.defer();
@@ -118,13 +133,13 @@ module.exports = function () {
     var d = q.defer();
 
     EventModel
-      .remove({_regimen: regimenId}, function (err, status) {
+      .find({_regimen: regimenId}, function (err, events) {
         if(err) {
           d.reject(err);
         } else {
-          d.resolve(status);
+          d.resolve(events);
         }
-      });
+    }).remove();
 
     return d.promise;
   }

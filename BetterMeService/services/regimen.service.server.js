@@ -5,6 +5,8 @@ module.exports = function (app, RegimenModel, UserModel, EventModel, InviteModel
   app.put("/api/regimen/:regimenId", updateRegimen);
   app.delete("/api/regimen/:regimenId", deleteRegimen);
 
+  var _ = require('underscore');
+  
   function createRegimen(req, res) {
     var newRegimen = req.body;
     RegimenModel
@@ -52,14 +54,32 @@ module.exports = function (app, RegimenModel, UserModel, EventModel, InviteModel
         UserModel.removeRegimenFromCoachedRegimens(regimen)
       })
       .then(function() {
-        for (i = 0; i < regimenToDelete.cadettes.length; i++) {
-          UserModel.removeRegimenFromEnlistedRegimens(regimenToDelete.cadettes[i]._id, regimenId);
-        }
+        _.each(regimenToDelete.cadettes, function(cadetteId) {
+          UserModel.removeRegimenFromEnlistedRegimens(cadetteId, regimenId);
+        });
       })
       .then(function() {
-        EventModel.deleteEventsForRegimen(regimenId);
+        return EventModel.findEventsForRegimen(regimenId);
+      })
+      .then(function(events) {
+        _.each(events, function (event) {
+          EventModel.deleteEvent(event._id);
+          UserModel.removeEventFromUser(event._user, event._id);
+        });
       })
       .then(function() {
+        return InviteModel.findInvitesForRegimen(regimenId);
+      })
+      .then(function(invites) {
+        InviteModel.deleteInvitesForRegimen(regimenId);
+        _.each(invites, function (invite) {
+          if (invite._sender.toString() === invite._recipient.toString()) {
+            UserModel.removeSameSenderInvites(invite._sender, invite._id);
+          } else {
+            UserModel.removeInviteFromReceivedInvites(invite._recipient, invite._id);
+            UserModel.removeInviteFromSentInvites(invite._sender, invite._id);
+          }
+        });
         InviteModel.deleteInvitesForRegimen(regimenId);
       })
       .then(function(regimen) {

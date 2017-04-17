@@ -8,11 +8,16 @@ module.exports = function () {
     addInviteToReceiver: addInviteToReceiver,
     addRegimenToUsersCoachedRegimens: addRegimenToUsersCoachedRegimens,
     addRegimenToUsersEnlistedRegimens: addRegimenToUsersEnlistedRegimens,
+    addEventsToUser: addEventsToUser,
     findUserByEmail: findUserByEmail,
     findUserByCredentials: findUserByCredentials,
     updateUser: updateUser,
     removeRegimenFromCoachedRegimens: removeRegimenFromCoachedRegimens,
     removeRegimenFromEnlistedRegimens: removeRegimenFromEnlistedRegimens,
+    removeInviteFromSentInvites: removeInviteFromSentInvites,
+    removeInviteFromReceivedInvites: removeInviteFromReceivedInvites,
+    removeSameSenderInvites: removeSameSenderInvites,
+    removeEventFromUser: removeEventFromUser,
     deleteUser: deleteUser
   };
 
@@ -108,6 +113,23 @@ module.exports = function () {
           d.reject(err);
         } else {
           user.receivedInvites.push(invite._id);
+          user.save();
+          d.resolve();
+        }
+      });
+
+    return d.promise;
+  }
+
+  function addEventsToUser(userId, eventIds) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.bankedEvents = user.bankedEvents.concat(eventIds);
           user.save();
           d.resolve();
         }
@@ -219,6 +241,86 @@ module.exports = function () {
         } else {
           var index = user.enlistedRegimens.indexOf(regimenId);
           user.enlistedRegimens.splice(index, 1);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+  
+  function removeInviteFromSentInvites(userId, inviteId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.sentInvites.indexOf(inviteId);
+          user.sentInvites.splice(index, 1);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function removeInviteFromReceivedInvites(userId, inviteId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.receivedInvites.indexOf(inviteId);
+          user.receivedInvites.splice(index, 1);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function removeSameSenderInvites(userId, inviteId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.receivedInvites.indexOf(inviteId);
+          user.receivedInvites.splice(index, 1);
+          index = user.sentInvites.indexOf(inviteId);
+          user.sentInvites.splice(index, 1);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function removeEventFromUser(userId, eventId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.scheduledEvents.indexOf(eventId);
+          if (index >= 0) {
+            user.scheduledEvents.splice(index, 1);
+          }
+          index = user.bankedEvents.indexOf(eventId);
+          if (index >= 0) {
+            user.bankedEvents.splice(index, 1);
+          }
           user.save();
           d.resolve(user);
         }
