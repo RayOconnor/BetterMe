@@ -4,7 +4,9 @@ module.exports = function () {
     createInvite: createInvite,
     findInviteById: findInviteById,
     updateInvite: updateInvite,
-    deleteInvite: deleteInvite
+    deleteInvite: deleteInvite,
+    deleteInvitesForRegimen: deleteInvitesForRegimen,
+    deleteInvitesForUser: deleteInvitesForUser
   };
 
   var q = require('q');
@@ -54,6 +56,36 @@ module.exports = function () {
 
     InviteModel
       .remove({'_id': inviteId}, function (err, status) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(status);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function deleteInvitesForRegimen(regimenId) {
+    var d = q.defer();
+    
+    InviteModel
+      .remove({_regimen: regimenId}, function (err, status) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(status);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function deleteInvitesForUser(userId) {
+    var d = q.defer();
+    
+    InviteModel
+      .remove({$or :[{_sender: userId}, {_recipient: userId}]}, function (err, status) {
         if(err) {
           d.reject(err);
         } else {

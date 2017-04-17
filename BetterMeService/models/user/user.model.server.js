@@ -7,9 +7,12 @@ module.exports = function () {
     addInviteToSender: addInviteToSender,
     addInviteToReceiver: addInviteToReceiver,
     addRegimenToUsersCoachedRegimens: addRegimenToUsersCoachedRegimens,
+    addRegimenToUsersEnlistedRegimens: addRegimenToUsersEnlistedRegimens,
     findUserByEmail: findUserByEmail,
     findUserByCredentials: findUserByCredentials,
     updateUser: updateUser,
+    removeRegimenFromCoachedRegimens: removeRegimenFromCoachedRegimens,
+    removeRegimenFromEnlistedRegimens: removeRegimenFromEnlistedRegimens,
     deleteUser: deleteUser
   };
 
@@ -56,6 +59,23 @@ module.exports = function () {
           user.coachedRegimens.push(regimen._id);
           user.save();
           d.resolve(regimen);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function addRegimenToUsersEnlistedRegimens(userId, regimenId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          user.enlistedRegimens.push(regimenId);
+          user.save();
+          d.resolve(user);
         }
       });
 
@@ -165,6 +185,42 @@ module.exports = function () {
           d.reject(err);
         } else {
           d.resolve(status);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function removeRegimenFromCoachedRegimens(regimen) {
+    var d = q.defer();
+
+    UserModel
+      .findById(regimen._coach, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.coachedRegimens.indexOf(regimen._id);
+          user.coachedRegimens.splice(index, 1);
+          user.save();
+          d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function removeRegimenFromEnlistedRegimens(userId, regimenId) {
+    var d = q.defer();
+
+    UserModel
+      .findById(userId, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.enlistedRegimens.indexOf(regimenId);
+          user.enlistedRegimens.splice(index, 1);
+          user.save();
+          d.resolve(user);
         }
       });
 

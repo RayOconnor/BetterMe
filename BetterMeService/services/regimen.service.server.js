@@ -1,4 +1,4 @@
-module.exports = function (app, RegimenModel, UserModel) {
+module.exports = function (app, RegimenModel, UserModel, EventModel, InviteModel) {
   app.post("/api/regimen", createRegimen);
   //app.get("/api/regimen", getRegimens);
   app.get("/api/regimen/user/:userId", getRegimensForUser);
@@ -44,13 +44,33 @@ module.exports = function (app, RegimenModel, UserModel) {
 
   function deleteRegimen(req, res) {
     var regimenId = req.params.regimenId;
+    var regimenToDelete;
     RegimenModel
       .deleteRegimen(regimenId)
       .then(function(regimen) {
+        regimenToDelete = regimen;
+        UserModel.removeRegimenFromCoachedRegimens(regimen)
+      })
+      .then(function() {
+        for (i = 0; i < regimenToDelete.cadettes.length; i++) {
+          UserModel.removeRegimenFromEnlistedRegimens(regimenToDelete.cadettes[i]._id, regimenId);
+        }
+      })
+      .then(function() {
+        EventModel.deleteEventsForRegimen(regimenId);
+      })
+      .then(function() {
+        InviteModel.deleteInvitesForRegimen(regimenId);
+      })
+      .then(function(regimen) {
         res.json(regimen);
-      }, function (error) {
+      })
+      .catch(function (error) {
         res.sendStatus(500).send(error);
       });
+    
   }
+  
+  
 
 };
