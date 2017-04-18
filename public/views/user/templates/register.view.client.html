@@ -1,28 +1,65 @@
 
 <div class="container-fluid user-form">
   <h1>Register</h1>
-  <form>
+  <form name="form1" novalidate>
+    <label for="firstName">First Name</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.firstName.$error.required">is required</span>
     <input ng-model="model.user.firstName"
            class="form-control"
            type="text"
-           placeholder="First Name"/>
+           id="firstName"
+           name="firstName"
+           placeholder="First Name"
+           required/>
+    <label for="firstName">Last Name</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.lastName.$error.required">is required</span>
     <input ng-model="model.user.lastName"
            class="form-control"
            type="text"
-           placeholder="Last Name"/>
+           id="lastName"
+           name="lastName"
+           placeholder="Last Name"
+           required/>
+    <label for="firstName">Email</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.email.$error.required">is required</span>
+    <span class="form-help" ng-if="form1.$submitted && form1.email.$error.email">is not a valid email</span>
     <input ng-model="model.user.email"
            class="form-control"
+           type="email"
+           id="email"
+           name="email"
+           placeholder="Email"
+           required/>
+    <label for="birthday">Birthday</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.birthday.$error.required">is required</span>
+    <input class="form-control"
+           id="birthday"
+           name="birthday"
+           placeholder="MM/DD/YYYY"
+           ng-model="model.user.dateOfBirth"
+           data-provide="datepicker"
            type="text"
-           placeholder="Email"/>
+           required/>
+    <label for="password">Password</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.password.$error.required">is required</span>
     <input class="form-control"
            type="password"
+           id="password"
+           name="password"
            placeholder="Password"
-           ng-model="model.user.password"/>
+           ng-model="model.user.password"
+           required/>
+    <label for="confirmPassword">Confirm Password</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.confirmPassword.$error.required">is required</span>
     <input class="form-control"
            type="password"
+           id="confirmPassword"
+           name="confirmPassword"
            placeholder="Confirm Password"
-           ng-model="password2"/>
+           ng-model="password2"
+           required/>
+    <button ng-click="model.register(model.user, form1)" type="submit" class="btn btn-block btn-primary">Submit</button>
+    <a class="btn btn-default btn-danger btn-block" href="#/login" role="button">Cancel</a>
   </form>
-  <a ng-click="model.createUser(model.user)" class="btn btn-default btn-primary btn-block" role="button">Register</a>
-  <a class="btn btn-default btn-danger btn-block" href="#/login" role="button">Cancel</a>
+  {{form1}}
 </div>

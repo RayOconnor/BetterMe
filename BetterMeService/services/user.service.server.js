@@ -1,27 +1,54 @@
 module.exports = function (app, UserModel, EventModel, RegimenModel) {
+  var passport = require('passport');
+  var LocalStrategy = require('passport-local').Strategy;
+  var FacebookStrategy = require('passport-facebook').Strategy;
+
+  var _ = require('underscore');
+
+  var facebookConfig = {
+    clientID     : process.env.FACEBOOK_CLIENT_ID,
+    clientSecret : process.env.FACEBOOK_CLIENT_SECRET,
+    callbackURL  : process.env.FACEBOOK_CALLBACK_URL
+  };
+
+  passport.use(new LocalStrategy(localStrategy));
+  passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
+  passport.serializeUser(serializeUser);
+  passport.deserializeUser(deserializeUser);
+
   app.post("/api/user", createUser);
+  app.post("/api/login", passport.authenticate('local'), login);
+  app.get('/api/loggedin', loggedin);
+  app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+  app.post("/api/logout", logout);
+  app.post("/api/register", register);
   app.post("/api/enlist/user/:userId/regimen/:regimenId", enlistUser);
   app.get("/api/user", findUser);
   app.get("/api/user/:userId", findUserById);
   app.put("/api/user/:userId", updateUser);
-  
   app.delete("/api/user/:userId", deleteUser);
 
-  var passport = require('passport');
-  var LocalStrategy = require('passport-local').Strategy;
-  var _ = require('underscore');
+  function login(req, res) {
+    var user = req.user;
+    res.json(user);
+  }
 
-  passport.use(new LocalStrategy(localStrategy));
-  passport.serializeUser(serializeUser);
-  passport.deserializeUser(deserializeUser);
+  function loggedin(req, res) {
+    res.send(req.isAuthenticated() ? req.user : '0');
+  }
+
+  function logout(req, res) {
+    req.logout();
+    res.send(200);
+  }
 
   function serializeUser(user, done) {
     done(null, user);
   }
 
   function deserializeUser(user, done) {
-    developerModel
-      .findDeveloperById(user._id)
+    UserModel
+      .findUserById(user._id)
       .then(
         function(user){
           done(null, user);
@@ -32,12 +59,12 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
       );
   }
 
-  function localStrategy(username, password, done) {
+  function localStrategy(email, password, done) {
     UserModel
-      .findUserByCredentials(username, password)
+      .findUserByCredentials(email, password)
       .then(
         function(user) {
-          if(user.username === username && user.password === password) {
+          if(user.email === email && user.password === password) {
             return done(null, user);
           } else {
             return done(null, false);
@@ -47,6 +74,49 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
           if (err) { return done(err); }
         }
       );
+  }
+
+  function facebookStrategy(token, refreshToken, profile, done) {
+    
+    UserModel
+      .findUserByFacebookId(profile.id)
+      .then(function(user) {
+        if (user) {
+          res.json(user);
+        }
+        else {
+          
+        }
+      
+    })
+  }
+  
+  function buildUserFromFacebookInfo(profile, token) {
+    return {
+      firstName: profile.displayName,
+      facebook: {
+        id:    profile.id,
+        token: token
+      }
+    }
+  }
+
+  function register (req, res) {
+    var user = req.body;
+    UserModel
+      .createUser(user)
+      .then(function(user) {
+        if(user) {
+          req.login(user, function(err) {
+            if(err) {
+              res.status(400).send(err);
+            } else {
+              res.json(user);
+            }
+          });
+        }
+      }
+    );
   }
 
   function createUser(req, res) {

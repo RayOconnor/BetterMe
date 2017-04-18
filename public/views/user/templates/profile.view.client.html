@@ -2,7 +2,6 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <h3 class="nav-header">Profile</h3>
-    <a class="glyphicon glyphicon-ok nav-icon" aria-hidden="true" href="#/user/{{model.user._id}}"></a>
   </div>
 </nav>
 
@@ -46,12 +45,11 @@
     Calendar
   </a>
 
-  <a ng-click="model.update(model.user)"
-     class="btn btn-primary btn-block">
+  <a ng-click="model.update(model.user)" class="btn btn-primary btn-block">
     Update
   </a>
 
-  <a class="btn btn-danger btn-block" href="#/login">
+  <a ng-click="model.logout()" class="btn btn-danger btn-block">
     Logout
   </a>
 </div>

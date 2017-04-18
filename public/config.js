@@ -19,7 +19,8 @@
       .when("/user/:uid",{
         templateUrl: 'views/user/templates/profile.view.client.html',
         controller: 'profileController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: { loggedin: checkLoggedin }
       })
       .when("/user/:uid/calendar",{
         templateUrl: 'views/calendar/templates/calendar.view.client.html',
@@ -31,6 +32,21 @@
         controller: 'loginController',
         controllerAs: 'model'
       });
-
   }
+
+  var checkLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+    var deferred = $q.defer();
+    $http.get('/api/loggedin').success(function(user) {
+      $rootScope.errorMessage = null;
+      if (user !== '0') {
+        $rootScope.currentUser = user;
+        deferred.resolve();
+      } else {
+        deferred.reject();
+        $location.url('/');
+      }
+    });
+    return deferred.promise;
+  };
+
 })();

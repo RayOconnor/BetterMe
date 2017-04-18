@@ -3,34 +3,37 @@
     .module("BetterMe")
     .controller("loginController", loginController);
 
-  function loginController(UserService, $location) {
+  function loginController(UserService, $location, $rootScope) {
     var vm = this;
     vm.login = login;
 
     function init() {
     }
-    init();
 
+    init();
+/*
     function login(user) {
       var promise = UserService
         .findUserByCredentials(user.username, user.password);
-      promise.success(function(user){
-        if(user) {
-          $location.url("/user/"+user._id);
+      promise.success(function (user) {
+        if (user) {
+          $location.url("/user/" + user._id);
         } else {
           vm.error = "User not found";
         }
       });
     }
-
+*/
     function login(user) {
       UserService
         .login(user)
         .then(
-          function(response) {
+          function (response) {
             var user = response.data;
             $rootScope.currentUser = user;
-            $location.url("/user/"+user._id);
+            $location.url("/user/" + user._id);
           });
     }
+  }
+    
 })();
