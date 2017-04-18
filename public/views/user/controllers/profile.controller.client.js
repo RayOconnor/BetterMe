@@ -4,9 +4,11 @@
     .module("BetterMe")
     .controller("profileController", profileController);
 
-  function profileController($routeParams, UserService) {
+
+  function profileController($routeParams, $location, $rootScope, UserService) {
     var vm = this;
     var userId = $routeParams['uid'];
+    vm.logout = logout;
 
     function init() {
       var promise = UserService.findUserById(userId);
@@ -16,7 +18,17 @@
     }
     init();
 
-    function updateUser(newUser) {
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function(response) {
+            $rootScope.currentUser = null;
+            $location.url("/");
+          });
+    }
+
+      function updateUser(newUser) {
       UserService
         .updateUser(userId, newUser)
         .success(renderUser);

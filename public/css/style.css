@@ -54,3 +54,7 @@ a.footer-nav-right-icon {
   margin-top: 20px;
   float: right;
 }
+
+span.form-help {
+  color: red;
+}

@@ -3,6 +3,7 @@ module.exports = function () {
   var api = {
     createUser: createUser,
     findUserById: findUserById,
+    findUserByFacebookId: findUserByFacebookId,
     addEventToUser: addEventToUser,
     addInviteToSender: addInviteToSender,
     addInviteToReceiver: addInviteToReceiver,
@@ -151,6 +152,10 @@ module.exports = function () {
       });
 
     return d.promise;
+  }
+
+  function findUserByFacebookId(facebookId) {
+    return UserModel.findOne({'facebook.id': facebookId});
   }
 
   function findUserByEmail(email) {

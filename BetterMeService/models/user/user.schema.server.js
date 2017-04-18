@@ -3,11 +3,11 @@ module.exports = function () {
   var ObjectId = mongoose.Schema.Types.ObjectId;
   
   var UserSchema = mongoose.Schema({
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    email: {type: String, lowercase: true, unique: true, required: true},
-    password: {type: String, required: true},
-    dateOfBirth: {type: Date, required: true},
+    firstName: {type: String},
+    lastName: {type: String},
+    email: {type: String, lowercase: true, unique: true},
+    password: {type: String},
+    dateOfBirth: {type: Date},
     dateCreated: {type: Date},
     profileImageUrl: String,
     profileBio: String,
@@ -18,7 +18,13 @@ module.exports = function () {
     coachedRegimens: [{type: ObjectId, ref: 'RegimenModel'}],
     enlistedRegimens: [{type: ObjectId, ref: 'RegimenModel'}],
     sentInvites: [{type: ObjectId, ref: 'InviteModel'}],
-    receivedInvites: [{type: ObjectId, ref: 'InviteModel'}]
+    receivedInvites: [{type: ObjectId, ref: 'InviteModel'}],
+    facebook: {
+      id:    String,
+      token: String
+    }
+
+
   }, {collection: 'user'});
 
   return UserSchema;
