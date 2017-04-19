@@ -3,6 +3,7 @@ module.exports = function () {
   var api = {
     createRegimen: createRegimen,
     findRegimenById: findRegimenById,
+    findAllRegimens: findAllRegimens,
     getRegimensForCoach: getRegimensForCoach,
     updateRegimen: updateRegimen,
     addCadetteToRegimen: addCadetteToRegimen,
@@ -33,6 +34,20 @@ module.exports = function () {
         }
       });
 
+    return d.promise;
+  }
+
+  function findAllRegimens() {
+    var d = q.defer();
+
+    RegimenModel.find({}).populate('_coach').exec(function (err, regimens) {
+      if(err) {
+        d.reject(err);
+      } else {
+        d.resolve(regimens);
+      }
+    });
+    
     return d.promise;
   }
 

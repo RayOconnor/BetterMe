@@ -1,4 +1,4 @@
 (function() {
   angular
-    .module("BetterMe", ["ngRoute"]);
+    .module("BetterMe", ["ngRoute", "textAngular"]);
 })();

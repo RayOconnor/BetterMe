@@ -1,0 +1,28 @@
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <h3 class="nav-header">Enlist In A Regimen</h3>
+  </div>
+</nav>
+
+<div class="container-fluid">
+
+  <h3>Find a Regimen That Appeals To You</h3>
+  <input ng-model="model.searchRegimen"
+         class="form-control"
+         placeholder="Search by Regimen's Title or Coach's Username"
+         ng-change="model.updateDisplayedRegimens()">
+  <div ng-repeat="regimen in model.displayedRegimens">
+    <h4>{{regimen.title}}</h4>
+    <span>Coached By: {{regimen._coach.firstName}} {{regimen._coach.lastName}}</span>
+    <span>{{model.getCommitment(regimen)}}</span>
+
+  </div>
+</div>
+
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+  <div class="container">
+    <a class="glyphicon glyphicon-user footer-nav-right-icon" aria-hidden="true" href="#/user/{{model.user._id}}"></a>
+  </div>
+</nav>

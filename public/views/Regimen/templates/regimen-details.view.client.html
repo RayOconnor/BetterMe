@@ -1,0 +1,66 @@
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <h3 class="nav-header">Regimen Details</h3>
+    <button ng-click="model.enlist(model.regimen)" type="submit" class="navbar-btn btn btn-primary">Enlist</button>
+  </div>
+</nav>
+
+<div class="container-fluid">
+
+  <h1>{{model.regimen.title}} Details</h1>
+
+  <form>
+    <label for="title">Title</label>
+    <input ng-model="model.regimen.title"
+         id="title"
+         class="form-control"
+         type="text"
+         placeholder="Grab attention with an exciting title"/>
+
+    <label>Description</label>
+    <div ng-model="model.regimen.description"
+         text-angular
+         ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+          ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+          ['indent','outdent'],['html']]">
+
+    </div>
+
+    <label for="frequencyNumber">Frequency Per Period</label>
+    <input ng-model="model.regimen.frequencyNumber"
+           id="frequencyNumber"
+           class="form-control"
+           type="number"
+           placeholder="How many events per time period?"/>
+
+    <label for="start">Start Date</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.start.$error.required">is required</span>
+    <input class="form-control"
+           id="start"
+           name="start"
+           placeholder="MM/DD/YYYY"
+           ng-model="model.user.start"
+           data-provide="datepicker"
+           type="text"
+           required/>
+    <label for="end">End Date</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.start.$error.required">is required</span>
+    <input class="form-control"
+           id="end"
+           name="end"
+           placeholder="MM/DD/YYYY"
+           ng-model="model.user.end"
+           data-provide="datepicker"
+           type="text"
+           required/>
+    <button ng-click="model.updateRegimen(model.regimen, form1)" type="submit" class="btn btn-block btn-primary">Update Details</button>
+  </form>
+</div>
+
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+  <div class="container">
+    <a class="glyphicon glyphicon-user footer-nav-right-icon" aria-hidden="true" href="#/user/{{model.user._id}}"></a>
+  </div>
+</nav>

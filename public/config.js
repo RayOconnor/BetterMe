@@ -19,12 +19,26 @@
       .when("/user/:uid",{
         templateUrl: 'views/user/templates/profile.view.client.html',
         controller: 'profileController',
-        controllerAs: 'model',
-        resolve: { loggedin: checkLoggedin }
+        controllerAs: 'model'
       })
       .when("/user/:uid/calendar",{
         templateUrl: 'views/calendar/templates/calendar.view.client.html',
         controller: 'eventController',
+        controllerAs: 'model'
+      })
+      .when("/user/:uid/regimen",{
+        templateUrl: 'views/regimen/templates/regimen-list.view.client.html',
+        controller: 'regimenListController',
+        controllerAs: 'model'
+      })
+      .when("/user/:uid/regimen/new",{
+        templateUrl: 'views/regimen/templates/regimen-new.view.client.html',
+        controller: 'regimenNewController',
+        controllerAs: 'model'
+      })
+      .when("/user/:uid/regimen/:rid",{
+        templateUrl: 'views/regimen/templates/regimen-details.view.client.html',
+        controller: 'regimenDetailsController',
         controllerAs: 'model'
       })
       .otherwise({
