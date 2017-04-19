@@ -2,6 +2,8 @@ module.exports = function (app, RegimenModel, UserModel, EventModel, InviteModel
   app.post("/api/regimen", createRegimen);
   //app.get("/api/regimen", getRegimens);
   app.get("/api/regimen/user/:userId", getRegimensForUser);
+  app.get("/api/regimen/:regimenId", findRegimenById);
+  app.get("/api/regimen", findAllRegimens);
   app.put("/api/regimen/:regimenId", updateRegimen);
   app.delete("/api/regimen/:regimenId", deleteRegimen);
 
@@ -19,7 +21,7 @@ module.exports = function (app, RegimenModel, UserModel, EventModel, InviteModel
         res.json(newRegimen.toObject());
       })
       .catch(function(error) {
-        res.sendStatus(500).send(error);;
+        res.sendStatus(500).send(error);
       });
   }
 
@@ -29,6 +31,28 @@ module.exports = function (app, RegimenModel, UserModel, EventModel, InviteModel
       .getRegimensForUser(userId)
       .then(function(regimens) {
         res.json(regimens);
+      })
+  }
+
+  function findRegimenById(req, res) {
+    var regimenId = req.params.regimenId;
+    RegimenModel
+      .findRegimenById(regimenId)
+      .then(function(regimen) {
+        res.json(regimen);
+      })
+      .catch(function(error) {
+        res.sendStatus(500).send(error);
+      })
+  }
+
+  function findAllRegimens(req, res) {
+    RegimenModel.findAllRegimens()
+      .then(function(regimens) {
+        res.json(regimens);
+      })
+      .catch(function(error) {
+        res.sendStatus(500).send(error);
       })
   }
 

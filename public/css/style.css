@@ -58,3 +58,8 @@ a.footer-nav-right-icon {
 span.form-help {
   color: red;
 }
+
+div.ta-scroll-window.form-control {
+  height: auto;
+}
+
