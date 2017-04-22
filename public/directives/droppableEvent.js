@@ -9,7 +9,7 @@
         revert: true,      // immediately snap back to original position
         revertDuration: 0  //
       });
-      element.data('event', {title: 'my event'});
+      //element.data('event', {title: 'my event'});
     }
     return {
       link: linkFunc

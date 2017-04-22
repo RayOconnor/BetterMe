@@ -1,0 +1,25 @@
+<div class="container-fluid">
+
+  <h3>Select the recipient of your invitation</h3>
+  <form>
+    <input ng-model="model.userSearchTerm"
+         class="form-control"
+         placeholder="Search By User's Email"
+         ng-change="model.updateDisplayedUsers()">
+    <label ng-repeat="user in model.displayedUsers" class="radio">
+      <input ng-model="model.invite._recipient" type="radio" value="{{user._id}}"> {{user.firstName}} {{user.lastName}}, {{user.email}}
+    </label>
+    <h3>What regimen are you inviting them to join?</h3>
+    <input ng-model="model.regimenSearchTerm"
+           class="form-control"
+           placeholder="Search by Regimen's Title or Coach's Username"
+           ng-change="model.updateDisplayedRegimens()">
+    <label ng-repeat="regimen in model.displayedRegimens" class="radio">
+      <input ng-model="model.invite._regimen" type="radio" value="{{regimen._id}}"> {{regimen.title}}, {{regimen._coach.email}}
+    </label>
+    <button ng-click="model.sendInvite()" type="submit" class="btn btn-block btn-primary">Submit</button>
+
+
+  </form>
+
+</div>

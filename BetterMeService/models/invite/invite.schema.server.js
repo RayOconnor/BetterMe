@@ -2,8 +2,8 @@ module.exports = function () {
   var mongoose = require('mongoose');
 
   var InviteSchema = mongoose.Schema({
-    message: {type: String, required: true},
-    dateCreated: {type: Date, required: true},
+    message: {type: String},
+    dateCreated: {type: Date},
     resolved: Boolean,
     _sender: {type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'},
     _recipient: {type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'},

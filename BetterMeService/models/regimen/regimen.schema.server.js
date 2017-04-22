@@ -6,7 +6,7 @@ module.exports = function () {
     description: String,
     start: {type: Date, required: true},
     end: {type: Date, required: true},
-    dateCreated: {type: Date, required: true},
+    dateCreated: {type: Date},
     frequencyScope: {type: String, enum: ['D', 'W', 'M'], default: 'W'},
     frequencyNumber: Number,
     cadettes: [{type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'}],

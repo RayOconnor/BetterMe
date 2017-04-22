@@ -1,28 +1,40 @@
-
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <h3 class="nav-header">Enlist In A Regimen</h3>
-  </div>
-</nav>
-
 <div class="container-fluid">
+  <h1 class="header-title">Manage Your Regimens</h1>
+  <a href="#/user/{{model.userId}}/regimen/find" class="header-btn btn btn-primary">Find A Regimen</a>
+  <a ng-if="!model.user.coachedRegimens.length" href="#/user/{{model.userId}}/regimen/new" class="header-btn btn btn-success">Become A Coach!</a>
+  <a ng-if="model.user.coachedRegimens.length" href="#/user/{{model.userId}}/regimen/new" class="header-btn btn btn-success">Create Another Regimen</a>
 
-  <h3>Find a Regimen That Appeals To You</h3>
-  <input ng-model="model.searchRegimen"
-         class="form-control"
-         placeholder="Search by Regimen's Title or Coach's Username"
-         ng-change="model.updateDisplayedRegimens()">
-  <div ng-repeat="regimen in model.displayedRegimens">
-    <h4>{{regimen.title}}</h4>
-    <span>Coached By: {{regimen._coach.firstName}} {{regimen._coach.lastName}}</span>
-    <span>{{model.getCommitment(regimen)}}</span>
-
+  <h3>Enlisted Regimens</h3>
+  <h4 ng-if="!model.user.enlistedRegimens.length"> You are not currently enrolled in any regimens</h4>
+  <table ng-if="model.user.enlistedRegimens.length" class="table table-hover">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Frequency</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="regimen in model.user.enlistedRegimens" ng-click="model.redirectToRegimenDetails(regimen)">
+      <td>{{regimen.title}}</td>
+      <td>{{regimen.frequencyNumber}} times {{model.getPrettyFrequency(regimen)}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <div ng-if="model.user.coachedRegimens.length">
+    <h3>Coached Regimens</h3>
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>Frequency</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="regimen in model.user.coachedRegimens" ng-click="model.redirectToRegimenDetails(regimen)">
+        <td>{{regimen.title}}</td>
+        <td>{{regimen.frequencyNumber}} times {{model.getPrettyFrequency(regimen)}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
-
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div class="container">
-    <a class="glyphicon glyphicon-user footer-nav-right-icon" aria-hidden="true" href="#/user/{{model.user._id}}"></a>
-  </div>
-</nav>

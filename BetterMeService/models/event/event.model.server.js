@@ -4,6 +4,7 @@ module.exports = function () {
     createEvent: createEvent,
     findEventById: findEventById,
     findEventsForRegimen: findEventsForRegimen,
+    findEventsForRegimenAndUser: findEventsForRegimenAndUser,
     getEventsForUser: getEventsForUser,
     createEventForUser: createEventForUser,
     createEventsFromArray: createEventsFromArray,
@@ -83,6 +84,21 @@ module.exports = function () {
     
     return d.promise;
   }
+
+  function findEventsForRegimenAndUser(regimenId, userId) {
+    var d = q.defer();
+
+    EventModel.find({$and :[{_user: userId}, {_regimen: regimenId}]}, function (err, events) {
+      if(err) {
+        d.reject(err);
+      } else {
+        d.resolve(events);
+      }
+    });
+
+    return d.promise;
+  }
+
 
   function getEventsForUser(userId) {
     var d = q.defer();

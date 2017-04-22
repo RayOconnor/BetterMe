@@ -3,6 +3,7 @@ module.exports = function (app, EventModel, UserModel) {
   //app.get("/api/event", getEvents);
   app.get("/api/event/user/:userId", getEventsForUser);
   app.put("/api/event/:eventId", updateEvent);
+  app.put("/api/event/move/:eventId", moveEvent);
   app.delete("/api/event/:eventId", deleteEvent);
 
   var _ = require('underscore');
@@ -40,6 +41,25 @@ module.exports = function (app, EventModel, UserModel) {
       }, function (error) {
         res.sendStatus(500).send(error);
       });
+  }
+
+  function moveEvent(req, res) {
+    var eventId = req.params.eventId;
+    var updatedEvent = req.body;
+    var returnedEvent;
+    EventModel
+      .updateEvent(eventId, updatedEvent)
+      .then(function(event) {
+        returnedEvent = event;
+        return UserModel.moveEvent(event);
+      })
+      .then(function() {
+        res.json(returnedEvent);
+      })
+      .catch(function(error) {
+        res.sendStatus(500).send(error);
+      });
+
   }
 
   function deleteEvent(req, res) {

@@ -26,7 +26,12 @@
         controller: 'eventController',
         controllerAs: 'model'
       })
-      .when("/user/:uid/regimen",{
+      .when("/user/:uid/regimen/find",{
+        templateUrl: 'views/regimen/templates/regimen-find.view.client.html',
+        controller: 'regimenFindController',
+        controllerAs: 'model'
+      })
+      .when("/user/:uid/regimen", {
         templateUrl: 'views/regimen/templates/regimen-list.view.client.html',
         controller: 'regimenListController',
         controllerAs: 'model'
@@ -39,6 +44,16 @@
       .when("/user/:uid/regimen/:rid",{
         templateUrl: 'views/regimen/templates/regimen-details.view.client.html',
         controller: 'regimenDetailsController',
+        controllerAs: 'model'
+      })
+      .when("/user/:uid/invite", {
+        templateUrl: 'views/invite/templates/invite-list.view.client.html',
+        controller: 'inviteListController',
+        controllerAs: 'model'
+      })
+      .when("/user/:uid/invite/new", {
+        templateUrl: 'views/invite/templates/invite-new.view.client.html',
+        controller: 'inviteNewController',
         controllerAs: 'model'
       })
       .otherwise({
@@ -61,6 +76,21 @@
       }
     });
     return deferred.promise;
+  };
+
+  var checkAdmin = function ($q, $location) {
+    var defer = $q.defer();
+    UserService
+      .isAdmin()
+      .then(function (user) {
+        if(user != '0') {
+          defer.resolve(user);
+        } else {
+          defer.reject();
+          $location.url('/profile');
+        }
+      });
+    return defer.promise;
   };
 
 })();

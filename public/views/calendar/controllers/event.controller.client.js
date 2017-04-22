@@ -3,25 +3,34 @@
     .module("BetterMe")
     .controller("eventController", EventController);
 
-  function EventController($routeParams, EventService) {
+  function EventController($routeParams, $location, EventService, UserService) {
     var vm = this;
     vm.userId = $routeParams.uid;
+    vm.calendarDate = Date.now();
+    vm.calendarScope = 'W';
 
+    vm.moveEvent = moveEvent;
     vm.createEvent = createEvent;
     vm.updateEvent = updateEvent;
     vm.editEvent = editEvent;
     vm.dropEvent = dropEvent;
+    vm.getJsonForEvent = getJsonForEvent;
+    vm.redirectToRegimen = redirectToRegimen;
+    vm.sanitizeEvent = sanitizeEvent;
+
 
     function init() {
-      EventService
-        .getEventsForUser(vm.userId)
-        .success(populateEvents);
+      UserService
+        .findUserById(vm.userId)
+        .success(function (user) {
+          vm.user = user;
+          vm.events = user.scheduledEvents;
+          if (vm.calendar) {
+            updateDisplayedBankedEvents();
+          }
+        });
     }
     init();
-
-    function populateEvents(events) {
-      vm.events = events;
-    }
 
     function editEvent() {
       $('#fullCalModal').modal();
@@ -48,17 +57,46 @@
     }
 
     function updateEvent(event) {
-      EventService.updateEvent(event._id, sanitizeEvent(event))
+      EventService.updateEvent(event._id, sanitizeEvent(event));
+      vm.calendar.fullCalendar('updateEvent', event);
+
     }
 
+    function getJsonForEvent(event) {
+      return JSON.stringify(event);
+    }
+
+    function moveEvent(event) {
+      EventService
+        .moveEvent(event)
+        .success(function () {
+          init();
+        });
+
+    }
+
+    function updateDisplayedBankedEvents() {
+      var view = vm.calendar.fullCalendar( 'getView' );
+      vm.displayedBankedEvents = vm.user.bankedEvents.filter(function (event) {
+        var eventStart = new Date(event.start);
+        return view.intervalStart._d < eventStart && view.intervalEnd._d > eventStart;
+      });
+    }
+
+    function redirectToRegimen(regimenId) {
+      $(".modal-backdrop").hide();
+      $('body').removeClass('modal-open');
+      $location.url("/user/"+vm.userId+"/regimen/"+regimenId);
+    }
+
+
     function sanitizeEvent(event) {
-      return {
-        _id: event._id,
-        title: event.title,
-        start: event.start,
-        end: event.end,
-        allDay: event.allDay
+      var newEvent = {};
+      for (var k in event) {
+        newEvent[k]=event[k];
       }
+      delete newEvent.source;
+      return newEvent;
     }
 
   }

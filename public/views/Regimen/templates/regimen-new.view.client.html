@@ -1,78 +1,69 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <h3 class="nav-header">Enlist In A Regimen</h3>
-    <a class="btn btn-primary btn-block"
-       ng-click=></a>
-  </div>
-</nav>
+<div class="container-fluid">
 
-<div class="container-fluid user-form">
-  <h1>Register</h1>
+  <h1>Create A Regimen</h1>
+
   <form name="form1" novalidate>
-    <label for="firstName">First Name</label>
-    <span class="form-help" ng-if="form1.$submitted && form1.firstName.$error.required">is required</span>
-    <input ng-model="model.user.firstName"
+    <label for="title">Title</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.title.$error.required">is required</span>
+    <input ng-model="model.regimen.title"
+           name="title"
+           id="title"
            class="form-control"
            type="text"
-           id="firstName"
-           name="firstName"
-           placeholder="First Name"
-           required/>
-    <label for="firstName">Last Name</label>
-    <span class="form-help" ng-if="form1.$submitted && form1.lastName.$error.required">is required</span>
-    <input ng-model="model.user.lastName"
+           placeholder="Grab attention with an exciting title"/>
+
+    <label>Description</label>
+    <div ng-model="model.regimen.description"
+         text-angular
+         ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+          ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+          ['indent','outdent'],['html', 'insertImage', 'insertVideo']]">
+    </div>
+
+    <label>Frequency</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.inlineRadioOptions.$error.required">is required</span>
+    <br/>
+    <label class="radio-inline">
+      <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="D" required> Daily
+    </label>
+    <label class="radio-inline">
+      <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="W" required> Weekly
+    </label>
+    <label class="radio-inline">
+      <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="M" required> Monthly
+    </label>
+
+    <br/>
+    <label for="frequencyNumber">Frequency Per Period</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.frequencyNumber.$error.required">is required</span>
+    <input ng-model="model.regimen.frequencyNumber"
+           name="frequencyNumber"
+           id="frequencyNumber"
            class="form-control"
-           type="text"
-           id="lastName"
-           name="lastName"
-           placeholder="Last Name"
-           required/>
-    <label for="firstName">Email</label>
-    <span class="form-help" ng-if="form1.$submitted && form1.email.$error.required">is required</span>
-    <span class="form-help" ng-if="form1.$submitted && form1.email.$error.email">is not a valid email</span>
-    <input ng-model="model.user.email"
-           class="form-control"
-           type="email"
-           id="email"
-           name="email"
-           placeholder="Email"
-           required/>
-    <label for="birthday">Birthday</label>
-    <span class="form-help" ng-if="form1.$submitted && form1.birthday.$error.required">is required</span>
+           type="number"
+           placeholder="How many events per time period?"/>
+
+    <label for="start">Start Date</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.start.$error.required">is required</span>
     <input class="form-control"
-           id="birthday"
-           name="birthday"
+           id="start"
+           name="start"
            placeholder="MM/DD/YYYY"
-           ng-model="model.user.dateOfBirth"
+           ng-model="model.regimen.start"
            data-provide="datepicker"
            type="text"
            required/>
-    <label for="password">Password</label>
-    <span class="form-help" ng-if="form1.$submitted && form1.password.$error.required">is required</span>
+    <label for="end">End Date</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.start.$error.required">is required</span>
     <input class="form-control"
-           type="password"
-           id="password"
-           name="password"
-           placeholder="Password"
-           ng-model="model.user.password"
+           id="end"
+           name="end"
+           placeholder="MM/DD/YYYY"
+           ng-model="model.regimen.end"
+           data-provide="datepicker"
+           type="text"
            required/>
-    <label for="confirmPassword">Confirm Password</label>
-    <span class="form-help" ng-if="form1.$submitted && form1.confirmPassword.$error.required">is required</span>
-    <input class="form-control"
-           type="password"
-           id="confirmPassword"
-           name="confirmPassword"
-           placeholder="Confirm Password"
-           ng-model="password2"
-           required/>
-    <button ng-click="model.register(model.user, form1)" type="submit" class="btn btn-block btn-primary">Submit</button>
-    <a class="btn btn-default btn-danger btn-block" href="#/login" role="button">Cancel</a>
+    <button ng-click="model.createRegimen(form1)" type="submit" class="btn btn-block btn-primary">Create Regimen</button>
   </form>
   {{form1}}
 </div>
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div class="container">
-    <a class="glyphicon glyphicon-user footer-nav-right-icon" aria-hidden="true" href="#/user/{{model.user._id}}"></a>
-  </div>
-</nav>

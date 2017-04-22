@@ -1,11 +1,12 @@
 (function() {
   angular
     .module("BetterMe")
-    .controller("regimenListController", regimenListController);
+    .controller("inviteListController", inviteListController);
 
-  function regimenListController($routeParams, $location, UserService) {
+  function inviteListController($routeParams, $location, UserService, InviteService) {
     var vm = this;
     vm.userId = $routeParams['uid'];
+    vm.deleteInvite = deleteInvite;
     vm.getPrettyFrequency = getPrettyFrequency;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
 
@@ -17,6 +18,13 @@
     }
 
     init();
+
+    function deleteInvite(inviteId) {
+      InviteService.deleteInvite(inviteId)
+        .success(function () {
+          init();
+        });
+    }
 
     function redirectToRegimenDetails(regimen) {
       $location.url("/user/"+vm.userId+"/regimen/"+regimen._id);

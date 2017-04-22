@@ -2,18 +2,18 @@
 
 <div class="row">
 
-  <div class="col-sm-12 col-md-10">
+  <div class="col-sm-12 col-md-9">
     <div class="row fullCalendar">
       <div custom-full-calendar=""></div>
     </div>
   </div>
-  <div class="hidden-xs hidden-sm col-md-2">
-    <h3>Regimens</h3>
+  <div class="hidden-xs hidden-sm col-md-3">
+    <h1>Regimens</h1>
     <div class="regimen-bank">
-      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Gym"}'>Gym</div>
-      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Work On Better Me"}'>Work On Better Me</div>
-      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Cook"}'>Cook</div>
-      <div droppable-event="" class="fc-event banked-event" data-event='{"title":"Email Tom"}'>Email Tom</div>
+      <h5 ng-if="!model.displayedBankedEvents.length">Great Job! There are no more events to be placed for this view.</h5>
+      <div ng-if="model.displayedBankedEvents.length" ng-repeat="event in model.displayedBankedEvents">
+        <div droppable-event="" class="fc-event banked-event" data-event={{event}}>{{event.title}}</div>
+      </div>
     </div>
   </div>
 </div>
@@ -21,14 +21,17 @@
 <div id="fullCalModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="container-fluid">
+      <div class="container-fluid modal-page">
         <label>Title</label>
         <input id ="modal-event-title"
                ng-model="model.editedEvent.title"
                class="form-control"
                type="text"
                placeholder="Name">
-        <a ng-click="model.updateEvent(model.editedEvent)" data-dismiss="modal" class="btn btn-default btn-primary btn-block" role="button">UpdateEvent</a>
+        <a ng-if="model.editedEvent._regimen" ng-click="model.redirectToRegimen(model.editedEvent._regimen)" data-dismiss="modal" class="btn btn-default btn-success btn-block" role="button">View Regimen Details</a>
+        <a ng-click="model.updateEvent(model.editedEvent)" data-dismiss="modal" class="btn btn-default btn-primary btn-block" role="button">Update Event</a>
+        <a ng-click="model.updateEvent(model.editedEvent)" data-dismiss="modal" class="btn btn-default btn-danger btn-block" role="button">Delete Event</a>
+        {{model.editedEvent}}
       </div>
     </div>
   </div>

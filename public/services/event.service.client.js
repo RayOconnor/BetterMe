@@ -9,6 +9,7 @@
       createEventForUser: createEventForUser,
       getEventsForUser: getEventsForUser,
       updateEvent: updateEvent,
+      moveEvent: moveEvent,
       deleteEvent: deleteEvent
     };
     return api;
@@ -23,6 +24,10 @@
 
     function updateEvent(eventId, event) {
       return $http.put("/api/event/"+eventId, event);
+    }
+    
+    function moveEvent(event) {
+      return $http.put("/api/event/move/"+event._id, event);
     }
 
     function deleteEvent(eventId) {
