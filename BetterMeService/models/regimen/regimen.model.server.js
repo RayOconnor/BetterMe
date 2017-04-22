@@ -7,7 +7,8 @@ module.exports = function () {
     getRegimensForCoach: getRegimensForCoach,
     updateRegimen: updateRegimen,
     addCadetteToRegimen: addCadetteToRegimen,
-    deleteRegimen: deleteRegimen
+    deleteRegimen: deleteRegimen,
+    removeCadetteFromRegimen: removeCadetteFromRegimen
   };
 
   var q = require('q');
@@ -102,10 +103,27 @@ module.exports = function () {
     var d = q.defer();
 
     RegimenModel
-      .findOneAndRemove({'_id': regimenId}, function (err, regimen) {
+      .findOneAndRemove(regimenId, function (err, regimen) {
         if(err) {
           d.reject(err);
         } else {
+          d.resolve(regimen);
+        }
+      });
+    return d.promise;
+  }
+  
+  function removeCadetteFromRegimen(userId, regimenId) {
+    var d = q.defer();
+
+    RegimenModel
+      .findById(regimenId, function (err, regimen) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = regimen.cadettes.indexOf(userId);
+          regimen.cadettes.splice(index, 1);
+          regimen.save();
           d.resolve(regimen);
         }
       });

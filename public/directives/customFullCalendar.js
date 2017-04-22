@@ -3,7 +3,7 @@
     .module("BetterMe")
     .directive("customFullCalendar", customFullCalendarDir)
   
-  function customFullCalendarDir() {
+  function customFullCalendarDir($rootScope) {
     function linkFunc(scope, element) {
       
       scope.$watch('model.events', function(events){
@@ -50,7 +50,11 @@
               drop: function(date) {
                 var droppedEvent = JSON.parse(this.dataset.event);
                 droppedEvent.start = date;
-                scope.model.dropEvent(droppedEvent);
+                scope.model.moveEvent(droppedEvent);
+
+              },
+              eventReceive: function(event) {
+                var newEvent = event;
               },
               /*
                events is the main option for calendar.
@@ -58,13 +62,21 @@
                */
               events: events,
               eventClick: function (event) {
-                scope.model.editedEvent = sanitizeEvent(event);
+                scope.model.editedEvent = event;
                 scope.$apply();
                 scope.model.editEvent();
               },
               eventDrop: scope.model.updateEvent,
-              eventResize: scope.model.updateEvent
-            });
+              eventResize: scope.model.updateEvent,
+              viewRender: function(view) {
+                scope.model.view = view;
+                scope.model.displayedBankedEvents = scope.model.user.bankedEvents.filter(function (event) {
+                  var eventStart = new Date(event.start);
+                  return view.intervalStart._d < eventStart && view.intervalEnd._d > eventStart;
+                });
+                $rootScope.$$phase || $rootScope.$apply();
+              }
+        });
           scope.model.calendar = calendar;
         }
       });
@@ -73,16 +85,6 @@
     return {
       link: linkFunc
     };
-
-    function sanitizeEvent(event) {
-      return {
-        _id: event._id,
-        title: event.title,
-        start: event.start,
-        end: event.end,
-        allDay: event.allDay
-      }
-    }
 
   }
 })();

@@ -18,6 +18,9 @@ module.exports = function (app, InviteModel, UserModel) {
       })
       .then(function() {
         res.json(newInvite.toObject());
+      })
+      .catch(function(err) {
+        res.sendStatus(500).send(error);
       });
   }
 

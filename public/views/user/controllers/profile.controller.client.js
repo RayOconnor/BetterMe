@@ -7,11 +7,11 @@
 
   function profileController($routeParams, $location, $rootScope, UserService) {
     var vm = this;
-    var userId = $routeParams['uid'];
+    vm.userId = $routeParams['uid'];
     vm.logout = logout;
 
     function init() {
-      var promise = UserService.findUserById(userId);
+      var promise = UserService.findUserById(vm.userId);
       promise.success(function(user){
         vm.user = user;
       });
@@ -30,7 +30,7 @@
 
       function updateUser(newUser) {
       UserService
-        .updateUser(userId, newUser)
+        .updateUser(vm.userId, newUser)
         .success(renderUser);
     }
 
@@ -39,7 +39,7 @@
       console.log(user);
     }
 
-    var user = UserService.findUserById(userId);
+    var user = UserService.findUserById(vm.userId);
     vm.user = user;
 
     console.log(user);

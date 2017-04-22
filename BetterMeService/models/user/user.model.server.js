@@ -4,6 +4,7 @@ module.exports = function () {
     createUser: createUser,
     findUserById: findUserById,
     findUserByFacebookId: findUserByFacebookId,
+    findAllUsers: findAllUsers,
     addEventToUser: addEventToUser,
     addInviteToSender: addInviteToSender,
     addInviteToReceiver: addInviteToReceiver,
@@ -13,6 +14,7 @@ module.exports = function () {
     findUserByEmail: findUserByEmail,
     findUserByCredentials: findUserByCredentials,
     updateUser: updateUser,
+    moveEvent: moveEvent,
     removeRegimenFromCoachedRegimens: removeRegimenFromCoachedRegimens,
     removeRegimenFromEnlistedRegimens: removeRegimenFromEnlistedRegimens,
     removeInviteFromSentInvites: removeInviteFromSentInvites,
@@ -143,11 +145,51 @@ module.exports = function () {
     var d = q.defer();
 
     UserModel
-      .findById(userId, function (err, user) {
+      .findOne({_id: userId})
+      .populate('coachedRegimens')
+      .populate('enlistedRegimens')
+      .populate('scheduledEvents')
+      .populate('bankedEvents')
+      .populate(
+        {
+          path: 'sentInvites',
+          model: 'InviteModel',
+          populate: [
+            { path: '_sender', model: 'UserModel' },
+            { path: '_recipient', model: 'UserModel' },
+            { path: '_regimen', model: 'RegimenModel' }
+          ]
+        })
+      .populate(
+        {
+          path: 'receivedInvites',
+          model: 'InviteModel',
+          populate: [
+            { path: '_sender', model: 'UserModel' },
+            { path: '_recipient', model: 'UserModel' },
+            { path: '_regimen', model: 'RegimenModel' }
+          ]
+        })
+      .exec(function (err, user) {
         if(err) {
           d.reject(err);
         } else {
           d.resolve(user);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function findAllUsers() {
+    var d = q.defer();
+
+    UserModel
+      .find({}, function (err, users) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(users);
         }
       });
 
@@ -197,6 +239,31 @@ module.exports = function () {
           d.reject(err);
         } else {
           d.resolve(updatedUser);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function moveEvent(event) {
+    var d = q.defer();
+
+    UserModel
+      .findById(event._user, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          var index = user.scheduledEvents.indexOf(event._id);
+          if (index >= 0) {
+            user.scheduledEvents.splice(index, 1);
+            user.bankedEvents.push(event);
+          } else {
+            index = user.bankedEvents.indexOf(event._id);
+            user.bankedEvents.splice(index, 1);
+            user.scheduledEvents.push(event);
+          }
+          user.save();
+          d.resolve(user);
         }
       });
 

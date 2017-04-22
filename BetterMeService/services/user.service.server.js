@@ -22,11 +22,13 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
   app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
   app.post("/api/logout", logout);
   app.post("/api/register", register);
+  app.post('/api/lecture-morning/isAdmin', isAdmin);
   app.post("/api/enlist/user/:userId/regimen/:regimenId", enlistUser);
   app.get("/api/user", findUser);
   app.get("/api/user/:userId", findUserById);
   app.put("/api/user/:userId", updateUser);
   app.delete("/api/user/:userId", deleteUser);
+  app.delete("/api/enlist/user/:userId/regimen/:regimenId", unEnlist);
 
   function login(req, res) {
     var user = req.user;
@@ -40,6 +42,10 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
   function logout(req, res) {
     req.logout();
     res.send(200);
+  }
+
+  function isAdmin(req, res) {
+    res.send(req.isAuthenticated() && req.user.admin ? req.user : '0');
   }
 
   function serializeUser(user, done) {
@@ -151,7 +157,19 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
       findUserByCredentials(req, res);
     } else if(email) {
       findUserByEmail(email, req, res);
+    } else {
+      findAllUsers(req, res);
     }
+  }
+  
+  function findAllUsers(req, res) {
+    UserModel
+      .findAllUsers()
+      .then(function(users) {
+        res.json(users);
+      }, function (error) {
+        res.sendStatus(500).send(error);
+      });
   }
 
   function findUserByEmail(email, req, res) {
@@ -217,6 +235,32 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
       })
       .then(function(events) {
         res.json(events)
+      })
+      .catch(function(error) {
+        res.sendStatus(500).send(error);
+      });
+  }
+
+  function unEnlist(req, res) {
+    var userId = req.params.userId;
+    var regimenId = req.params.regimenId;
+
+    UserModel
+      .removeRegimenFromEnlistedRegimens(userId, regimenId)
+      .then(function() {
+        return RegimenModel.removeCadetteFromRegimen(userId, regimenId);
+      })
+      .then(function() {
+        return EventModel.findEventsForRegimenAndUser(regimenId, userId);
+      })
+      .then(function(events) {
+        _.each(events, function (event) {
+          EventModel.deleteEvent(event._id);
+          UserModel.removeEventFromUser(event._user, event._id);
+        });
+      })
+      .then(function (regimen) {
+        res.json(regimen);
       })
       .catch(function(error) {
         res.sendStatus(500).send(error);
