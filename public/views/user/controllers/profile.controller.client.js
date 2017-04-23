@@ -5,43 +5,41 @@
     .controller("profileController", profileController);
 
 
-  function profileController($routeParams, $location, $rootScope, UserService) {
+  function profileController($routeParams, $location, currentUser, UserService) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
+    vm.userId = currentUser._id;
+    vm.user = currentUser;
+    vm.updateUser = updateUser;
+    vm.unregisterUser = unregisterUser;
     vm.logout = logout;
-
-    function init() {
-      var promise = UserService.findUserById(vm.userId);
-      promise.success(function(user){
-        vm.user = user;
-      });
-    }
-    init();
 
     function logout() {
       UserService
         .logout()
         .then(
-          function(response) {
-            $rootScope.currentUser = null;
+          function() {
             $location.url("/");
           });
     }
 
-      function updateUser(newUser) {
+    function unregisterUser(userId) {
       UserService
-        .updateUser(vm.userId, newUser)
-        .success(renderUser);
+        .unregisterUser(userId)
+        .then(function () {
+          $location.url('/');
+        });
     }
 
-    function renderUser(user) {
-      vm.user = user;
-      console.log(user);
+    function updateUser(form) {
+      if(!form.$valid) {
+        return;
+      }
+      UserService
+        .updateUser(vm.userId, vm.user)
+        .success(function (user)  {
+          vm.user = user;
+        });
     }
-
-    var user = UserService.findUserById(vm.userId);
-    vm.user = user;
-
-    console.log(user);
+    
   }
 })();

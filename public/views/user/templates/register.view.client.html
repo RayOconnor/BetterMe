@@ -11,7 +11,7 @@
            name="firstName"
            placeholder="First Name"
            required/>
-    <label for="firstName">Last Name</label>
+    <label for="lastName">Last Name</label>
     <span class="form-help" ng-if="form1.$submitted && form1.lastName.$error.required">is required</span>
     <input ng-model="model.user.lastName"
            class="form-control"
@@ -20,7 +20,7 @@
            name="lastName"
            placeholder="Last Name"
            required/>
-    <label for="firstName">Email</label>
+    <label for="email">Email</label>
     <span class="form-help" ng-if="form1.$submitted && form1.email.$error.required">is required</span>
     <span class="form-help" ng-if="form1.$submitted && form1.email.$error.email">is not a valid email</span>
     <input ng-model="model.user.email"
@@ -51,6 +51,7 @@
            required/>
     <label for="confirmPassword">Confirm Password</label>
     <span class="form-help" ng-if="form1.$submitted && form1.confirmPassword.$error.required">is required</span>
+    <span class="form-help" ng-if="model.password2 !== model.user.password">passwords do not match</span>
     <input class="form-control"
            type="password"
            id="confirmPassword"
@@ -61,5 +62,4 @@
     <button ng-click="model.register(model.user, form1)" type="submit" class="btn btn-block btn-primary">Submit</button>
     <a class="btn btn-default btn-danger btn-block" href="#/login" role="button">Cancel</a>
   </form>
-  {{form1}}
 </div>

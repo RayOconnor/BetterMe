@@ -3,23 +3,15 @@
     .module("BetterMe")
     .controller("regimenListController", regimenListController);
 
-  function regimenListController($routeParams, $location, UserService) {
+  function regimenListController($location, currentUser) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
+    vm.userId = currentUser._id;
+    vm.user = currentUser;
     vm.getPrettyFrequency = getPrettyFrequency;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
 
-    function init() {
-      var promise = UserService.findUserById(vm.userId);
-      promise.success(function (user) {
-        vm.user = user;
-      });
-    }
-
-    init();
-
     function redirectToRegimenDetails(regimen) {
-      $location.url("/user/"+vm.userId+"/regimen/"+regimen._id);
+      $location.url("/regimen/"+regimen._id);
     }
 
     function getPrettyFrequency(regimen) {

@@ -18,11 +18,12 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
 
   app.post("/api/user", createUser);
   app.post("/api/login", passport.authenticate('local'), login);
-  app.get('/api/loggedin', loggedin);
+  app.post('/api/loggedin', loggedin);
   app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
   app.post("/api/logout", logout);
   app.post("/api/register", register);
-  app.post('/api/lecture-morning/isAdmin', isAdmin);
+  app.post('/api/isAdmin', isAdmin);
+  app.post('/api/isOwner/:userId', isOwner);
   app.post("/api/enlist/user/:userId/regimen/:regimenId", enlistUser);
   app.get("/api/user", findUser);
   app.get("/api/user/:userId", findUserById);
@@ -36,7 +37,20 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
   }
 
   function loggedin(req, res) {
-    res.send(req.isAuthenticated() ? req.user : '0');
+    if (req.isAuthenticated()) {
+      UserModel
+        .findUserById(req.user._id)
+        .then(function (user) {
+          res.send(user);
+        })
+        .catch(function (error) {
+          res.sendStatus(500).send(error);
+        });
+    } else {
+      res.send('0');
+    }
+
+    //res.send(req.isAuthenticated() ? req.user : '0');
   }
 
   function logout(req, res) {
@@ -46,6 +60,10 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
 
   function isAdmin(req, res) {
     res.send(req.isAuthenticated() && req.user.admin ? req.user : '0');
+  }
+  
+  function isOwner(req, res) {
+    res.send(req.isAuthenticated() && (req.params.userId === req.user._id) ? req.user : 0 )
   }
 
   function serializeUser(user, done) {

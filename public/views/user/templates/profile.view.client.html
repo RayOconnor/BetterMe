@@ -13,11 +13,12 @@
     </div>
     <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#/user/{{model.userId}}">My Profile <span class="sr-only">(current)</span></a></li>
-        <li><a href="#/user/{{model.userId}}/calendar">My Calendar</a></li>
-        <li><a href="#/user/{{model.userId}}/regimen">My Regimens</a></li>
-        <li><a href="#/user/{{model.userId}}/regimen/find">Find Regimens</a></li>
-        <li><a href="#/user/{{model.userId}}/regimen/new">Create A Regimen</a></li>
+        <li class="active"><a href="#/profile">My Profile <span class="sr-only">(current)</span></a></li>
+        <li><a href="#/calendar">My Calendar</a></li>
+        <li><a href="#/regimen">My Regimens</a></li>
+        <li><a href="#/regimen/find">Find Regimens</a></li>
+        <li><a href="#/regimen/new">Create A Regimen</a></li>
+        <li><a href="" ng-click="model.logout()">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -25,51 +26,82 @@
 
 
 <div class="container-fluid">
-  <h1>Profile</h1>
+  <div>
+    <h1>Profile</h1>
+    <form name="form1" novalidate>
+      <label for="firstName">First Name</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.firstName.$error.required">is required</span>
+      <input ng-model="model.user.firstName"
+             class="form-control"
+             type="text"
+             id="firstName"
+             name="firstName"
+             placeholder="First Name"
+             required/>
+      <label for="lastName">Last Name</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.lastName.$error.required">is required</span>
+      <input ng-model="model.user.lastName"
+             class="form-control"
+             type="text"
+             id="lastName"
+             name="lastName"
+             placeholder="Last Name"
+             required/>
+      <label>Bio</label>
+      <div ng-model="model.user.profileBio"
+           text-angular
+           ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+              ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+              ['indent','outdent'],['html', 'insertImage', 'insertVideo']]">
+      </div>
 
-  <div class="alert alert-danger" ng-show="model.error">
-    {{model.error}}
+      <label for="email">Email</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.email.$error.required">is required</span>
+      <span class="form-help" ng-if="form1.$submitted && form1.email.$error.email">is not a valid email</span>
+      <input ng-model="model.user.email"
+             class="form-control"
+             type="email"
+             id="email"
+             name="email"
+             placeholder="Email"
+             required/>
+      <label for="birthday">Birthday</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.birthday.$error.required">is required</span>
+      <input class="form-control"
+             id="birthday"
+             name="birthday"
+             placeholder="MM/DD/YYYY"
+             ng-model="model.user.dateOfBirth"
+             data-provide="datepicker"
+             type="text"
+             required/>
+      <label for="password">New Password</label>
+      <input class="form-control"
+             type="password"
+             id="password"
+             name="password"
+             placeholder="Password"
+             ng-model="model.user.password"
+             required/>
+
+      <label>GoogleCalendarId</label>
+      <a href="#/google-calendar-help"> <i class="fa fa-info-circle" aria-hidden="true"></i> </a>
+      <input ng-model="model.user.googleCalendarId"
+             id="googlCalendarId"
+             class="form-control"
+             type="text"
+             placeholder="abcd1234@group.calendar.google.com"/>
+
+      <button ng-click="model.updateUser(form1)" type="submit" class="btn btn-block btn-primary">Update</button>
+
+      <a href="#/calendar" class="btn btn-success btn-block">
+        Calendar
+      </a>
+      <a ng-click="model.logout()" class="btn btn-danger btn-block">
+        Logout
+      </a>
+    </form>
   </div>
-
-  <div class="alert alert-success" ng-show="model.message">
-    {{model.message}}
-  </div>
-
-  <label for="first">First Name</label>
-  <input ng-model="model.user.firstName"
-         id="first"
-         class="form-control"
-         type="text"
-         placeholder="First Name"/>
-
-  <label for="last">Last Name</label>
-  <input ng-model="model.user.lastName"
-         id="last"
-         class="form-control"
-         type="text"
-         placeholder="Last Name"/>
-
-  <label for="email">Email</label>
-  <input ng-model="model.user.email"
-         id="email"
-         class="form-control"
-         type="email"
-         placeholder="Email"/>
-
-  <label>Password</label>
-  <input class="form-control" type="password" placeholder="Password"/>
-
-  <a href="#/user/{{model.user._id}}/calendar" class="btn btn-success btn-block">
-    Calendar
-  </a>
-
-  <a ng-click="model.update(model.user)" class="btn btn-primary btn-block">
-    Update
-  </a>
-
-  <a ng-click="model.logout()" class="btn btn-danger btn-block">
-    Logout
-  </a>
 </div>
 <nav class="navbar navbar-default navbar-fixed-bottom">
   <div class="container">

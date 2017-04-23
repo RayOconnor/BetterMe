@@ -5,7 +5,7 @@
 
   function regimenFindController($routeParams, $location, RegimenService) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
+    //vm.userId = $routeParams['uid'];
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
     vm.getCommitment = getCommitment;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
@@ -24,7 +24,7 @@
     init();
 
     function getCommitment(regimen) {
-      return "Commitment: " + regimen.frequencyNumber + " times " + regimen.frequencyScope ;
+      return regimen.frequencyNumber + " times " + getPrettyFrequency(regimen.frequencyScope);
     }
 
     function updateDisplayedRegimens() {
@@ -34,8 +34,19 @@
       })
     }
 
+    function getPrettyFrequency(regimen) {
+      switch (regimen.frequencyScope) {
+        case "D":
+          return "Daily";
+        case "W":
+          return "Weekly";
+        default:
+          return "Yearly";
+      }
+    }
+
     function redirectToRegimenDetails(regimen) {
-      $location.url("/user/"+vm.userId+"/regimen/"+regimen._id);
+      $location.url("/regimen/"+regimen._id);
     }
   }
 })();

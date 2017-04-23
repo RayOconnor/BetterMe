@@ -16,9 +16,11 @@
       "updateUser": updateUser,
       "deleteUser": deleteUser,
       "login": login,
+      "loggedin": loggedin,
       "logout": logout,
       "register": register,
-      "isAdmin": isAdmin
+      "isAdmin": isAdmin,
+      "unregisterUser": unregisterUser
     };
     return api;
 
@@ -58,20 +60,50 @@
       return $http.delete("/api/user/"+userId);
     }
 
-    function login(user) {
-      return $http.post("/api/login", user);
-    }
-
-    function logout() {
-      return $http.post("/api/logout");
+    function isAdmin() {
+      return $http.post('/api/isAdmin')
+        .then(function (response) {
+          return response.data;
+        });
     }
 
     function register(user) {
-      return $http.post("/api/register", user);
+      return $http.post('/api/register', user)
+        .then(function (response) {
+          return response.data;
+        });
     }
 
-    function isAdmin() {
-      return $http.post('/api/user/isAdmin')
+    function logout() {
+      return $http.post('/api/logout')
+        .then(function (response) {
+          return response.data;
+        });
+    }
+
+    function loggedin() {
+      return $http.post('/api/loggedin')
+        .then(function (response) {
+          return response.data;
+        });
+    }
+
+    function login(user) {
+      return $http.post('/api/login', user)
+        .then(function (response) {
+          return response.data;
+        });
+    }
+    
+    function isOwner(userId) {
+      return $http.post('/api/user/isOwner', userId)
+        .then(function (response) {
+          return response.data;
+        });
+    }
+
+    function unregisterUser(userId) {
+      return $http.delete('/api/user/'+userId)
         .then(function (response) {
           return response.data;
         });

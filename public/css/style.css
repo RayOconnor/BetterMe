@@ -65,7 +65,6 @@ div.ta-scroll-window.form-control {
 }
 
 a.header-btn {
-  transform: translateY(+65%);
   float: right;
   margin-left:  10px;
 }
@@ -77,4 +76,17 @@ h1.header-title {
 div.modal-page {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+a.gcal-event {
+  pointer-events: none;
+  cursor: default;
+}
+
+.table-title {
+  display: inline-block;
+}
+
+.table-header-button {
+  margin-top: 10px;
 }

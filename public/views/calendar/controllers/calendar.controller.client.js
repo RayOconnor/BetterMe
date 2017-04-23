@@ -3,9 +3,11 @@
     .module("BetterMe")
     .controller("eventController", EventController);
 
-  function EventController($routeParams, $location, EventService, UserService) {
+  function EventController($location, currentUser, EventService) {
     var vm = this;
-    vm.userId = $routeParams.uid;
+    vm.userId = currentUser._id;
+    vm.user = currentUser;
+    vm.events = currentUser.scheduledEvents;
     vm.calendarDate = Date.now();
     vm.calendarScope = 'W';
 
@@ -17,18 +19,12 @@
     vm.getJsonForEvent = getJsonForEvent;
     vm.redirectToRegimen = redirectToRegimen;
     vm.sanitizeEvent = sanitizeEvent;
-
+    vm.getScopeFromView = getScopeFromView;
 
     function init() {
-      UserService
-        .findUserById(vm.userId)
-        .success(function (user) {
-          vm.user = user;
-          vm.events = user.scheduledEvents;
-          if (vm.calendar) {
-            updateDisplayedBankedEvents();
-          }
-        });
+      if (vm.calendar) {
+        updateDisplayedBankedEvents();
+      }
     }
     init();
 
@@ -79,16 +75,30 @@
       var view = vm.calendar.fullCalendar( 'getView' );
       vm.displayedBankedEvents = vm.user.bankedEvents.filter(function (event) {
         var eventStart = new Date(event.start);
-        return view.intervalStart._d < eventStart && view.intervalEnd._d > eventStart;
+        return view.intervalStart._d < eventStart &&
+          view.intervalEnd._d > eventStart &&
+          getScopeFromView(view.name) === event.frequencyScope;
       });
     }
 
     function redirectToRegimen(regimenId) {
       $(".modal-backdrop").hide();
       $('body').removeClass('modal-open');
-      $location.url("/user/"+vm.userId+"/regimen/"+regimenId);
+      $location.url("/regimen/"+regimenId);
     }
 
+    function getScopeFromView(viewScope) {
+      switch(viewScope) {
+        case "month":
+          return 'M';
+        case "agendaWeek":
+          return 'W';
+        case "agendaDay":
+          return 'D';
+        default:
+          return "";
+      }
+    }
 
     function sanitizeEvent(event) {
       var newEvent = {};

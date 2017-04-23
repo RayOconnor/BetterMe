@@ -1,0 +1,70 @@
+
+<div class="container-fluid">
+  <div>
+    <h1>Profile</h1>
+
+    <label for="first">First Name</label>
+    <input ng-model="model.user.firstName"
+           id="first"
+           class="form-control"
+           type="text"
+           placeholder="First Name"/>
+
+    <label for="last">Last Name</label>
+    <input ng-model="model.user.lastName"
+           id="last"
+           class="form-control"
+           type="text"
+           placeholder="Last Name"/>
+
+    <label>Bio</label>
+    <div ng-model="model.user.profileBio"
+         text-angular
+         ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+            ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+            ['indent','outdent'],['html', 'insertImage', 'insertVideo']]">
+    </div>
+
+    <label for="email">Email</label>
+    <input ng-model="model.user.email"
+           id="email"
+           class="form-control"
+           type="email"
+           placeholder="Email"/>
+
+    <label for="password">Password</label>
+    <input class="form-control"
+           type="password"
+           id="password"
+           name="password"
+           placeholder="Password"
+           ng-model="model.password1"
+           required/>
+    <label for="confirmPassword">Confirm Password</label>
+    <span class="form-help" ng-if="form1.$submitted && model.password2 !== model.password1">does not match</span>
+    <input class="form-control"
+           type="password"
+           id="confirmPassword"
+           name="confirmPassword"
+           placeholder="Confirm Password"
+           ng-model="password2"
+           required/>
+
+    <div class="checkbox">
+      <label>
+        <input ng-model="model.user.admin" type="checkbox" value="true"> Make user an Admin?
+      </label>
+    </div>
+
+    <label>GoogleCalendarId</label>
+    <a href="#/google-calendar-help"> <i class="fa fa-info-circle" aria-hidden="true"></i> </a>
+    <input ng-model="model.user.googleCalendarId"
+           id="googlCalendarId"
+           class="form-control"
+           type="text"
+           placeholder="abcd1234@group.calendar.google.com"/>
+
+    <a ng-click="model.updateUser()" class="btn btn-primary btn-block">Update User</a>
+    <a ng-click="model.deleteUser()" class="btn btn-danger btn-block">Delete User</a>
+  </div>
+</div>

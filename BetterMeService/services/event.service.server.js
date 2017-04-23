@@ -1,6 +1,7 @@
 module.exports = function (app, EventModel, UserModel) {
   app.post("/api/event/user/:userId", createEventForUser);
-  //app.get("/api/event", getEvents);
+  app.get("/api/event/:eventId", findEventById);
+  app.get("/api/event", findAllEvents);
   app.get("/api/event/user/:userId", getEventsForUser);
   app.put("/api/event/:eventId", updateEvent);
   app.put("/api/event/move/:eventId", moveEvent);
@@ -14,14 +15,31 @@ module.exports = function (app, EventModel, UserModel) {
     newEvent._user = userId;
     EventModel
       .createEvent(newEvent)
-      .then(function(event) {
+      .then(function (event) {
         return UserModel.addEventToUser(event);
       })
-      .then(function(event) {
+      .then(function (event) {
         res.json(event.toObject());
       });
   }
 
+  function findEventById(req, res) {
+    var eventId = req.params.eventId;
+    EventModel
+      .findEventById(eventId)
+      .then(function(event) {
+        res.json(event);
+      })
+  }
+
+  function findAllEvents(req, res) {
+    EventModel
+      .findAllEvents()
+      .then(function(events) {
+        res.json(events);
+      })
+  }
+  
   function getEventsForUser(req, res) {
     var userId = req.params.userId;
     EventModel

@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <h1>{{model.user.firstName}} {{model.user.lastName}} </h1>
+
+  <div ng-bind-html="model.getTrustedHtml(model.user.profileBio)"></div>
+
+  <div class="row">
+    <div class="col-sm-3">
+      <table ng-if="model.user.enlistedRegimens.length" class="table table-hover">
+        <thead>
+        <tr>
+          <th>Enlisted In</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="regimen in model.user.enlistedRegimens" ng-click="model.redirectToRegimenDetails(regimen._id)">
+          <td>{{regimen.title}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-if="model.user.coachedRegimens.length">
+      <div class="col-sm-3">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>Coaches</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="regimen in model.user.coachedRegimens" ng-click="model.redirectToRegimenDetails(regimen._id)">
+            <td>{{regimen.title}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

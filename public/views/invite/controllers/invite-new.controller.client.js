@@ -3,9 +3,9 @@
     .module("BetterMe")
     .controller("inviteNewController", inviteNewController);
 
-  function inviteNewController($routeParams, $location, RegimenService, UserService, InviteService) {
+  function inviteNewController($location, currentUser, RegimenService, UserService, InviteService) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
+    vm.userId = currentUser._id;
     vm.invite = {};
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
     vm.updateDisplayedUsers = updateDisplayedUsers;
@@ -41,7 +41,7 @@
         .createInvite(vm.invite)
         .success(function (invite) {
           if (invite != null) {
-            $location.url('/user/' + vm.userId +'/invite');
+            $location.url('/invite');
           } else {
             vm.error = 'invite not sent';
           }

@@ -3,9 +3,10 @@
     .module("BetterMe")
     .controller("regimenNewController", regimenNewController);
 
-  function regimenNewController($routeParams, $location, RegimenService) {
+  function regimenNewController($location, currentUser, RegimenService) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
+    vm.user = currentUser;
+    vm.userId = currentUser._id;
     vm.regimen = {_coach: vm.userId};
     vm.createRegimen = createRegimen;
 

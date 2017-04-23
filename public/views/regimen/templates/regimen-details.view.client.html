@@ -71,7 +71,11 @@
     </form>
   </div>
   <div ng-if="!model.isCoach">
+    <br/>
     <h4>This regimen occurs {{model.regimen.frequencyNumber}} times {{model.regimen.frequencyScope}}</h4>
+    <a href="/#/user/{{model.regimen._coach}}"><h4>View this regimen's coach</h4></a>
+    <br/>
+
     <h4>Start: {{model.regimen.start}}</h4>
     <h4>End: {{model.regimen.end}}</h4>
 

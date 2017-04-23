@@ -1,0 +1,28 @@
+<h1>Admin</h1>
+
+<ul class="list-group">
+  <input ng-model="model.userSearchTerm"
+         class="form-control"
+         placeholder="Search By User's Email"
+         ng-change="model.updateDisplayedUsers()">
+  <table ng-if="model.displayedUsers.length" class="table table-hover">
+    <thead>
+    <tr>
+      <th></th>
+      <th>Email</th>
+      <th>First</th>
+      <th>Last</th>
+      <th>Admin</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in model.displayedUsers" ng-click="model.redirectToUserDetails(user._id)">
+      <td ng-click="model.deleteUser(user._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
+      <td>{{user.email}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.admin}}</td>
+    </tr>
+    </tbody>
+  </table>
+</ul>

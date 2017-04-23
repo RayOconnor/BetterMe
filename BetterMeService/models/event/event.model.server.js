@@ -5,6 +5,7 @@ module.exports = function () {
     findEventById: findEventById,
     findEventsForRegimen: findEventsForRegimen,
     findEventsForRegimenAndUser: findEventsForRegimenAndUser,
+    findAllEvents: findAllEvents,
     getEventsForUser: getEventsForUser,
     createEventForUser: createEventForUser,
     createEventsFromArray: createEventsFromArray,
@@ -65,6 +66,21 @@ module.exports = function () {
           d.reject(err);
         } else {
           d.resolve(event);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function findAllEvents() {
+    var d = q.defer();
+
+    EventModel
+      .find({}, function (err, events) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(events);
         }
       });
 
