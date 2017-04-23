@@ -1,0 +1,91 @@
+
+
+
+<div class="container-fluid">
+  <h1>{{model.regimen.title}}</h1>
+  <div ng-if="model.isCoach">
+
+    <form name="form1" novalidate>
+      <label for="title">Title</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.title.$error.required">is required</span>
+      <input ng-model="model.regimen.title"
+           id="title"
+           class="form-control"
+           type="text"
+           placeholder="Grab attention with an exciting title"
+           required/>
+
+      <label>Description</label>
+      <div ng-model="model.regimen.description"
+           text-angular
+           ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+            ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+            ['indent','outdent'],['html', 'insertImage', 'insertVideo']]">
+
+      </div>
+
+      <label>Frequency</label>
+      <br/>
+      <label class="radio-inline">
+        <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="D"> Daily
+      </label>
+      <label class="radio-inline">
+        <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="W"> Weekly
+      </label>
+      <label class="radio-inline">
+        <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="M"> Monthly
+      </label>
+
+      <br/>
+      <label for="frequencyNumber">Frequency Per Period</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.frequencyNumber.$error.required">is required</span>
+      <span class="form-help" ng-if="form1.$submitted && form1.frequencyNumber.$number.required">is required</span>
+      <input ng-model="model.regimen.frequencyNumber"
+             id="frequencyNumber"
+             class="form-control"
+             type="number"
+             placeholder="How many events per time period?"
+             required/>
+
+      <label for="start">Start Date</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.start.$error.required">is required</span>
+      <input class="form-control"
+             id="start"
+             name="start"
+             placeholder="MM/DD/YYYY"
+             ng-model="model.regimen.start"
+             data-provide="datepicker"
+             type="text"
+             required/>
+      <label for="end">End Date</label>
+      <span class="form-help" ng-if="form1.$submitted && form1.end.$error.required">is required</span>
+      <input class="form-control"
+             id="end"
+             name="end"
+             placeholder="MM/DD/YYYY"
+             ng-model="model.regimen.end"
+             data-provide="datepicker"
+             type="text"
+             required/>
+      <button ng-click="model.updateRegimen(form1)" type="submit" class="btn btn-block btn-primary">Update Details</button>
+    </form>
+  </div>
+  <div ng-if="!model.isCoach">
+    <h4>This regimen occurs {{model.regimen.frequencyNumber}} times {{model.regimen.frequencyScope}}</h4>
+    <h4>Start: {{model.regimen.start}}</h4>
+    <h4>End: {{model.regimen.end}}</h4>
+
+    <br/>
+    <div ng-bind-html="model.getTrustedHtml(model.regimen.description)"></div>
+  </div>
+  <button ng-click="model.enlistUser()" ng-disabled="model.isUserEnlisted" type="submit" class="navbar-btn btn btn-primary">Enlist</button>
+  <button ng-click="model.unEnlistUser()" ng-disabled="!model.isUserEnlisted" type="submit" class="navbar-btn btn btn-danger">Unenlist</button>
+  <button ng-click="model.deleteRegimen()" ng-if="model.isCoach" type="submit" class="navbar-btn btn btn-danger">Delete Regimen</button>
+</div>
+
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+  <div class="container">
+    <a class="glyphicon glyphicon-user footer-nav-right-icon" aria-hidden="true" href="#/user/{{model.user._id}}"></a>
+  </div>
+</nav>

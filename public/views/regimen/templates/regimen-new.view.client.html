@@ -1,0 +1,69 @@
+<div class="container-fluid">
+
+  <h1>Create A Regimen</h1>
+
+  <form name="form1" novalidate>
+    <label for="title">Title</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.title.$error.required">is required</span>
+    <input ng-model="model.regimen.title"
+           name="title"
+           id="title"
+           class="form-control"
+           type="text"
+           placeholder="Grab attention with an exciting title"/>
+
+    <label>Description</label>
+    <div ng-model="model.regimen.description"
+         text-angular
+         ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+          ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+          ['indent','outdent'],['html', 'insertImage', 'insertVideo']]">
+    </div>
+
+    <label>Frequency</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.inlineRadioOptions.$error.required">is required</span>
+    <br/>
+    <label class="radio-inline">
+      <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="D" required> Daily
+    </label>
+    <label class="radio-inline">
+      <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="W" required> Weekly
+    </label>
+    <label class="radio-inline">
+      <input ng-model="model.regimen.frequencyScope" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="M" required> Monthly
+    </label>
+
+    <br/>
+    <label for="frequencyNumber">Frequency Per Period</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.frequencyNumber.$error.required">is required</span>
+    <input ng-model="model.regimen.frequencyNumber"
+           name="frequencyNumber"
+           id="frequencyNumber"
+           class="form-control"
+           type="number"
+           placeholder="How many events per time period?"/>
+
+    <label for="start">Start Date</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.start.$error.required">is required</span>
+    <input class="form-control"
+           id="start"
+           name="start"
+           placeholder="MM/DD/YYYY"
+           ng-model="model.regimen.start"
+           data-provide="datepicker"
+           type="text"
+           required/>
+    <label for="end">End Date</label>
+    <span class="form-help" ng-if="form1.$submitted && form1.start.$error.required">is required</span>
+    <input class="form-control"
+           id="end"
+           name="end"
+           placeholder="MM/DD/YYYY"
+           ng-model="model.regimen.end"
+           data-provide="datepicker"
+           type="text"
+           required/>
+    <button ng-click="model.createRegimen(form1)" type="submit" class="btn btn-block btn-primary">Create Regimen</button>
+  </form>
+  {{form1}}
+</div>
