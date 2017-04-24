@@ -45,6 +45,7 @@
 
     function updateRegimen(form) {
       if(!form.$valid) {
+        vm.error = "Please make sure that all the fields are valid."
         return;
       }
       RegimenService

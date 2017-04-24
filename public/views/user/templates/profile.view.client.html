@@ -30,6 +30,9 @@
 <div class="container-fluid">
   <div>
     <h1>Profile</h1>
+    <div ng-show="model.error" class="alert alert-danger" role="alert">
+      {{model.error}}
+    </div>
     <form name="form1" novalidate>
       <label for="firstName">First Name</label>
       <span class="form-help" ng-if="form1.$submitted && form1.firstName.$error.required">is required.</span>

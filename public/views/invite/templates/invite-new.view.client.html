@@ -27,6 +27,9 @@
 
 <div class="container-fluid">
   <div class="col-lg-offset-4 col-md-offset-3 col-sm-offset-2 col-lg-4 col-md-6 col-sm-8">
+    <div ng-show="model.error" class="alert alert-danger" role="alert">
+      {{model.error}}
+    </div>
     <form name="form1">
       <h3>Select the recipient of your invitation</h3>
       <input ng-model="model.userSearchTerm" class="form-control" placeholder="Search By User's Email" ng-change="model.updateDisplayedUsers()">

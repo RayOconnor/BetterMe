@@ -21,6 +21,7 @@
     vm.createUser = function(user, form) {
       if(!form.$valid) {
         return;
+        vm.error = "Please make sure that all the fields are valid."
       }
 
       UserService

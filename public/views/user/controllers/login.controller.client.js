@@ -12,7 +12,7 @@
             $location.url('/profile');
           }
         }, function (err) {
-          model.error = err;
+          model.error = "Your email and password, don't appear to be in our systems, please make sure they are correct.";
         });
     }
   }
