@@ -82,12 +82,12 @@ module.exports = function (app, EventModel, UserModel) {
 
   function deleteEvent(req, res) {
     var eventId = req.params.eventId;
-    var eventToBeDeleted = event;
+    var eventToBeDeleted;
     EventModel
       .deleteEvent(eventId)
       .then(function(event) {
         eventToBeDeleted = event;
-        UserModel.removeEventFromUser(event._user, event)
+        return UserModel.removeEventFromUser(event._user, event._id)
       })
       .then(function() {
         res.json(eventToBeDeleted);

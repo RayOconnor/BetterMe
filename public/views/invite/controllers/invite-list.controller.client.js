@@ -8,8 +8,10 @@
     vm.userId = currentUser._id;
     vm.user = currentUser;
     vm.deleteInvite = deleteInvite;
+    vm.logout = logout;
     vm.getPrettyFrequency = getPrettyFrequency;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
+    vm.redirectToUserDetails = redirectToUserDetails;
 
     function deleteInvite(inviteId) {
       InviteService.deleteInvite(inviteId)
@@ -24,8 +26,21 @@
         });
     }
 
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
+    }
+
     function redirectToRegimenDetails(regimen) {
       $location.url("/regimen/"+regimen._id);
+    }
+
+    function redirectToUserDetails(user) {
+      $location.url("/user/"+user._id);
     }
 
     function getPrettyFrequency(regimen) {

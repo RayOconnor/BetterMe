@@ -40,7 +40,10 @@
       .when("/regimen/find",{
         templateUrl: 'views/regimen/templates/regimen-find.view.client.html',
         controller: 'regimenFindController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
       })
       .when("/regimen", {
         templateUrl: 'views/regimen/templates/regimen-list.view.client.html',
@@ -55,7 +58,7 @@
         controller: 'regimenNewController',
         controllerAs: 'model',
         resolve: {
-          current: checkLogin
+          currentUser: checkLogin
         }
       })
       .when("/regimen/:rid",{
@@ -63,7 +66,7 @@
         controller: 'regimenDetailsController',
         controllerAs: 'model',
         resolve: {
-          current: checkLogin
+          currentUser: checkLogin
         }
       })
       .when("/invite", {

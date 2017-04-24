@@ -3,10 +3,10 @@
     .module("BetterMe")
     .controller("regimenDetailsController", regimenDetailsController);
 
-  function regimenDetailsController($routeParams, $location, $sce, RegimenService, UserService) {
+  function regimenDetailsController($routeParams, $location, $sce, currentUser, RegimenService, UserService) {
     var vm = this;
     vm.regimenId = $routeParams.rid;
-    vm.userId = $routeParams.uid;
+    vm.userId = currentUser._id;
     vm.isUserEnlisted = false;
     vm.enlistUser = enlistUser;
     vm.unEnlistUser = unEnlistUser;
@@ -15,8 +15,8 @@
     vm.displayDate = displayDate;
     vm.updateRegimen = updateRegimen;
     vm.deleteRegimen = deleteRegimen;
-
-
+    vm.logout = logout;
+    
     function init() {
       var promise = RegimenService.findRegimenById(vm.regimenId);
       promise.success(function (regimen) {
@@ -39,7 +39,7 @@
         .deleteRegimen(vm.regimenId)
         .success(function (regimen) {
           renderRegimen(regimen);
-          $location.url("/user/"+vm.userId+"/regimen");
+          $location.url("/regimen");
         });
     }
 
@@ -53,6 +53,15 @@
           renderRegimen(regimen);
           $location.url("/user/"+vm.userId+"/regimen");
         });
+    }
+
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
     }
 
     function isRegimenCoach(coach) {
@@ -72,7 +81,7 @@
         .enlistUser(vm.userId, vm.regimenId)
         .success(function (regimen) {
           renderRegimen(regimen);
-          $location.url("/user/" + vm.userId + "/regimen");
+          $location.url("/regimen");
         });
     }
 
@@ -81,7 +90,7 @@
         .unEnlistUser(vm.userId, vm.regimenId)
         .success(function (regimen) {
           renderRegimen(regimen);
-          $location.url("/user/" + vm.userId + "/regimen");
+          $location.url("/regimen");
         });
     }
 

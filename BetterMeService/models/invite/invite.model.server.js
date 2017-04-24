@@ -3,6 +3,7 @@ module.exports = function () {
   var api = {
     createInvite: createInvite,
     findInviteById: findInviteById,
+    findAllInvites: findAllInvites,
     findInvitesForRegimen: findInvitesForRegimen,
     updateInvite: updateInvite,
     deleteInvite: deleteInvite,
@@ -31,6 +32,21 @@ module.exports = function () {
           d.reject(err);
         } else {
           d.resolve(invite);
+        }
+      });
+
+    return d.promise;
+  }
+
+  function findAllInvites() {
+    var d = q.defer();
+
+    InviteModel
+      .find({}, function (err, invites) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(invites);
         }
       });
 

@@ -61,13 +61,13 @@
               eventSources: [
                 {
                   googleCalendarId: scope.model.user.googleCalendarId,
-                  color: "#312f32",
+                  color: "#000000",
                   className: 'gcal-event'
                 },
                 events
               ],
               eventClick: function (event) {
-                scope.model.editedEvent = event;
+                scope.model.editedEvent = scope.model.sanitizeEvent(event);
                 scope.$apply();
                 scope.model.editEvent();
               },

@@ -1,0 +1,83 @@
+
+/*
+aqua  color: #4ec5c1;
+lime  color: #e5e336;
+pink  color: #ec576b;
+black color: #000000;
+*/
+
+$black          : #000000;
+$aqua           : #4ec5c1;
+$pink           : #ec576b;
+$colDefault     : #ecf0f1;
+$colHover       : #4ec5c1;
+$offWhite       : #ecf0f1;
+$forest         : #015249;
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: $aqua;
+  border-color: $aqua;
+}
+
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
+  background-color: $pink;
+  border-color: $pink;
+}
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+  background-color: $forest;
+  border-color: $forest;
+}
+
+.btn-facebook, .btn-facebook:hover, .btn-facebook:active, .btn-facebook:visited {
+  color: #ffffff;
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+
+.navbar-default {
+  background-color: $black;
+  border-color: $black;
+  .navbar-brand {
+    color: $colDefault;
+    &:hover, &:focus {
+      color: $colHover; }}
+  .navbar-nav {
+    > li {
+      > a {
+        color: $colDefault;
+        &:hover, &:focus {
+          color: $colHover;   }}}
+    .active {
+      > a, > a:hover, > a:focus {
+        color: $offWhite;
+        background-color: $aqua; }}
+    .open {
+      > a, > a:hover, > a:focus {
+        color: $colHover;
+        background-color: $aqua;
+        .caret {
+          border-top-color: $colHover;
+          border-bottom-color: $colHover; }}}
+    > .dropdown {
+      > a {
+        .caret {
+          border-top-color: $colDefault;
+          border-bottom-color: $colDefault; }
+        &:hover, &:focus {
+          .caret {
+            border-top-color: $colHover;
+            border-bottom-color: $colHover; }}}}}
+  .navbar-toggle {
+    border-color: $aqua;
+    &:hover, &:focus {
+      background-color: $aqua; }
+    .icon-bar {
+      background-color: $colDefault; }}}
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: $colDefault;
+    &:hover, &:focus {
+      color: $colHover;
+      background-color: $aqua; }}
+}

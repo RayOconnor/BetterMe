@@ -3,7 +3,7 @@
     .module("BetterMe")
     .controller("eventController", EventController);
 
-  function EventController($location, currentUser, EventService) {
+  function EventController($location, currentUser, UserService, EventService) {
     var vm = this;
     vm.userId = currentUser._id;
     vm.user = currentUser;
@@ -11,9 +11,11 @@
     vm.calendarDate = Date.now();
     vm.calendarScope = 'W';
 
+    vm.logout = logout;
     vm.moveEvent = moveEvent;
     vm.createEvent = createEvent;
     vm.updateEvent = updateEvent;
+    vm.deleteEvent = deleteEvent;
     vm.editEvent = editEvent;
     vm.dropEvent = dropEvent;
     vm.getJsonForEvent = getJsonForEvent;
@@ -22,9 +24,15 @@
     vm.getScopeFromView = getScopeFromView;
 
     function init() {
-      if (vm.calendar) {
-        updateDisplayedBankedEvents();
-      }
+      UserService
+        .findUserById(vm.userId)
+        .success(function (user) {
+          vm.user = user;
+          vm.events = user.scheduledEvents;
+          if (vm.calendar) {
+            updateDisplayedBankedEvents();
+          }
+        });
     }
     init();
 
@@ -57,9 +65,24 @@
       vm.calendar.fullCalendar('updateEvent', event);
 
     }
+    
+    function deleteEvent(event) {
+      EventService.deleteEvent(event._id)
+      vm.calendar.fullCalendar('removeEvents', event._id);
+
+    }
+
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
+    }
 
     function getJsonForEvent(event) {
-      return JSON.stringify(event);
+      return JSON.stringify(sanitizeEvent(event));
     }
 
     function moveEvent(event) {

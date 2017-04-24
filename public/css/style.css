@@ -12,6 +12,7 @@ div.regimen-bank {
 
 div.banked-event {
   margin: 5px;
+  z-index: 100;
 }
 
 input.form-control {
@@ -88,5 +89,22 @@ a.gcal-event {
 }
 
 .table-header-button {
-  margin-top: 10px;
+  margin-top: 20px;
 }
+
+input.table-radio {
+  position: relative !important;
+  margin: 0px !important;
+}
+
+div.radio {
+  margin: 0px;
+}
+
+
+/*
+aqua  color: #4ec5c1;
+lime  color: #e5e336;
+pink  color: #ec576b;
+black color: #000000;
+*/

@@ -3,12 +3,13 @@
     .module("BetterMe")
     .controller("regimenFindController", regimenFindController);
 
-  function regimenFindController($routeParams, $location, RegimenService) {
+  function regimenFindController($routeParams, $location, UserService, RegimenService) {
     var vm = this;
     //vm.userId = $routeParams['uid'];
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
     vm.getCommitment = getCommitment;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
+    vm.logout = logout;
     vm.searchRegimen = "";
     vm.displayedRegimens = [];
     vm.allRegimens = [];
@@ -34,6 +35,15 @@
       })
     }
 
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
+    }
+
     function getPrettyFrequency(regimen) {
       switch (regimen.frequencyScope) {
         case "D":
@@ -48,5 +58,7 @@
     function redirectToRegimenDetails(regimen) {
       $location.url("/regimen/"+regimen._id);
     }
+    
+    
   }
 })();

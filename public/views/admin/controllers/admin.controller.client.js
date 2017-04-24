@@ -10,6 +10,7 @@
     vm.updateUser = updateUser;
     vm.redirectToUserDetails = redirectToUserDetails;
     vm.updateDisplayedUsers = updateDisplayedUsers;
+    vm.logout = logout;
 
     function init() {
       UserService.findAllUsers()
@@ -40,6 +41,15 @@
           findAllUsers();
           $location.url("/admin");
         });
+    }
+
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
     }
 
     function renderUsers(users) {

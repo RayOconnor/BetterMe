@@ -296,6 +296,7 @@ module.exports = function () {
           var index = user.coachedRegimens.indexOf(regimen._id);
           user.coachedRegimens.splice(index, 1);
           user.save();
+          user.markModified('coachedRegimens');
           d.resolve(user);
         }
       });
@@ -314,6 +315,7 @@ module.exports = function () {
           var index = user.enlistedRegimens.indexOf(regimenId);
           user.enlistedRegimens.splice(index, 1);
           user.save();
+          user.markModified('enlistedRegimens');
           d.resolve(user);
         }
       });

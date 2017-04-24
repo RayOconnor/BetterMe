@@ -12,10 +12,18 @@
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
     
     function init() {
+      vm.isLoggedIn = false;
       UserService
         .findUserById(vm.userId)
         .success(function (user) {
           vm.user = user;
+        })
+      UserService
+        .loggedin()
+        .then(function (user) {
+          if (user !== '0') {
+            vm.isLoggedIn = true;
+          }
         })
     }
     init();

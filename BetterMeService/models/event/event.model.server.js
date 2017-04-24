@@ -150,11 +150,11 @@ module.exports = function () {
     var d = q.defer();
 
     EventModel
-      .remove({'_id': eventId}, function (err, status) {
+      .findOneAndRemove({'_id': eventId}, function (err, event) {
         if(err) {
           d.reject(err);
         } else {
-          d.resolve(status);
+          d.resolve(event);
         }
       });
 
