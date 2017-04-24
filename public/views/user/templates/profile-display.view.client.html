@@ -18,7 +18,6 @@
         <li><a href="#/regimen">My Regimens</a></li>
         <li><a href="#/invite">My Invites</a></li>
         <li><a href="#/regimen/find">Find Regimens</a></li>
-        <li><a href="#/regimen/" ng-click="model.logout()">Logout</a></li>
         <li><a href="" ng-click="model.logout()">Logout</a></li>
       </ul>
     </div>
@@ -42,7 +41,7 @@
         <table class="table table-hover">
           <thead>
           <tr>
-            <th>Brian enlisted in these regimens</th>
+            <th>{{model.user.firstName}} enlisted in these regimens</th>
           </tr>
           </thead>
           <tbody>
