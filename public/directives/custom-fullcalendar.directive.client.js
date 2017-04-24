@@ -17,7 +17,7 @@
                right define what will be at right position in calendar
                */
               header: {
-                left: 'prev,next today',
+                left: 'prev,next',
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
               },
