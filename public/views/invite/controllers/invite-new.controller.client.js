@@ -36,6 +36,7 @@
 
     function sendInvite() {
       if(!vm.invite._recipient || !vm.invite._regimen) {
+        vm.error = "Please make sure to select both a recipient and a regimen."
         return;
       }
       vm.invite._sender = vm.userId;

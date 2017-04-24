@@ -32,6 +32,7 @@
 
     function updateUser(form) {
       if(!form.$valid) {
+        vm.error = "Please make sure that all the fields are valid."
         return;
       }
       UserService
@@ -51,6 +52,9 @@
     }
 
     function displayDate(date) {
+      if (!date) {
+        date = Date.now();
+      }
       var d = new Date(date);
       var curr_date = d.getDate();
       var curr_month = d.getMonth() + 1; //Months are zero based
