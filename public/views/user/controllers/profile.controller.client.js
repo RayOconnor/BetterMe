@@ -43,6 +43,7 @@
         vm.error = "Please make sure that all the fields are valid."
         return;
       }
+      vm.user.password = vm.password1;
       UserService
         .updateUser(vm.userId, vm.user)
         .success(function (user)  {

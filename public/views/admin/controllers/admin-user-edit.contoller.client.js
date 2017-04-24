@@ -13,7 +13,7 @@
 
     function init() {
       UserService
-        .findUserById(vm.userId)
+        .findSparseUserById(vm.userId)
         .success(function (user) {
           vm.user = user;
           vm.user.dateOfBirth = displayDate(user.dateOfBirth);
@@ -31,10 +31,11 @@
     }
 
     function updateUser(form) {
-      if(!form.$valid) {
+      if(!form.$valid && vm.password1 != vm.password2) {
         vm.error = "Please make sure that all the fields are valid."
         return;
       }
+      vm.user.password = vm.password1;
       UserService
         .updateUser(vm.userId, vm.user)
         .success(function ()  {

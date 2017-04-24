@@ -15,7 +15,7 @@
         .register(user)
         .then(function (user) {
           $rootScope.currentUser = user;
-          $location.url("/profile");
+          $location.url("/calendar");
         });
     };
     

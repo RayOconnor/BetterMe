@@ -10,6 +10,7 @@
       "enlistUser": enlistUser,
       "unEnlistUser": unEnlistUser,
       "findUserById": findUserById,
+      "findSparseUserById": findSparseUserById,
       "findAllUsers": findAllUsers,
       "findUserByUsername": findUserByUsername,
       "findUserByCredentials": findUserByCredentials,
@@ -38,6 +39,10 @@
 
     function findUserById(userId) {
       return $http.get("/api/user/"+userId);
+    }
+
+    function findSparseUserById(userId) {
+      return $http.get("/api/user/"+userId+"?sparse=true");
     }
 
     function findAllUsers() {
