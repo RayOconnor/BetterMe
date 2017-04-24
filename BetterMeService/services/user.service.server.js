@@ -25,7 +25,7 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
   app.get ('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
-      successRedirect: "/#/profile",
+      successRedirect: "/#/calendar",
       failureRedirect: "/#/login"
     }));
   app.post("/api/logout", logout);
@@ -176,14 +176,25 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
 
   function findUserById(req, res) {
     var uid = req.params.userId;
-    UserModel
-      .findUserById(uid)
-      .then(function(user) {
-        res.json(user);
-      }, function (error) {
-        res.sendStatus(500).send(error);
-      });
-
+    var sparse = req.query['sparse'];
+    if (sparse) {
+      UserModel
+        .findSparseUserById(uid)
+        .then(function(user) {
+          res.json(user);
+        }, function (error) {
+          res.sendStatus(500).send(error);
+        });
+    } else {
+      UserModel
+        .findUserById(uid)
+        .then(function(user) {
+          res.json(user);
+        }, function (error) {
+          res.sendStatus(500).send(error);
+        });
+    }
+    
   }
 
   function findUser(req, res) {

@@ -2,6 +2,7 @@ module.exports = function () {
 
   var api = {
     createUser: createUser,
+    findSparseUserById: findSparseUserById,
     findUserById: findUserById,
     findUserByFacebookId: findUserByFacebookId,
     findAllUsers: findAllUsers,
@@ -135,6 +136,21 @@ module.exports = function () {
           user.bankedEvents = user.bankedEvents.concat(eventIds);
           user.save();
           d.resolve();
+        }
+      });
+
+    return d.promise;
+  }
+  
+  function findSparseUserById(userId) {
+    var d = q.defer();
+    
+    UserModel
+      .findOne({_id: userId}, function (err, user) {
+        if(err) {
+          d.reject(err);
+        } else {
+          d.resolve(user);
         }
       });
 

@@ -16,6 +16,7 @@
     vm.updateRegimen = updateRegimen;
     vm.deleteRegimen = deleteRegimen;
     vm.logout = logout;
+    vm.getPrettyFrequency = getPrettyFrequency;
     
     function init() {
       var promise = RegimenService.findRegimenById(vm.regimenId);
@@ -101,6 +102,17 @@
       var curr_month = d.getMonth() + 1; //Months are zero based
       var curr_year = d.getFullYear();
       return curr_month + "/" + curr_date + "/" + curr_year;
+    }
+
+    function getPrettyFrequency() {
+      switch (vm.regimen.frequencyScope) {
+        case "D":
+          return "Daily";
+        case "W":
+          return "Weekly";
+        default:
+          return "Yearly";
+      }
     }
 
   }
