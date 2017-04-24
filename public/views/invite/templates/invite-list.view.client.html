@@ -41,7 +41,7 @@
         <tbody>
         <tr ng-repeat="invite in model.user.sentInvites">
           <td ng-click="model.deleteInvite(invite._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
-          <td ng-click="model.redirectToUserDetails(invite._recipient)">{{invite._sender.firstName}} {{invite._sender.lastName}}</td>
+          <td ng-click="model.redirectToUserDetails(invite._recipient)">{{invite._recipient.firstName}} {{invite._recipient.lastName}}</td>
           <td ng-click="model.redirectToRegimenDetails(invite._regimen)">{{invite._regimen.title}}</td>
         </tr>
         </tbody>
@@ -61,7 +61,7 @@
         <tbody>
         <tr ng-repeat="invite in model.user.receivedInvites" ng-click="model.redirectToRegimenDetails(invite._regimen)">
           <td ng-click="model.deleteInvite(invite._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
-          <td ng-click="model.redirectToUserDetails(invite._recipient)">{{invite._recipient.firstName}} {{invite._sender.lastName}}</td>
+          <td ng-click="model.redirectToUserDetails(invite._sender)">{{invite._sender.firstName}} {{invite._sender.lastName}}</td>
           <td ng-click="model.redirectToRegimenDetails(invite._regimen)">{{invite._regimen.title}}</td>
         </tr>
         </tbody>

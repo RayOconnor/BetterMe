@@ -25,7 +25,7 @@
     <div ng-if="!model.isLoggedIn" class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="/#/register">Register</a></li>
-        <li><a href="/">Log in</a></li>
+        <li><a href="/#/login">Login</a></li>
       </ul>
     </div>
   </div>
@@ -57,7 +57,7 @@
           <table class="table table-hover">
             <thead>
             <tr>
-              <th>Brian coaches these regimens</th>
+              <th>{{model.user.firstName}} coaches these regimens</th>
             </tr>
             </thead>
             <tbody>

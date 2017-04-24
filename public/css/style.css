@@ -101,6 +101,46 @@ div.radio {
   margin: 0px;
 }
 
+div.banner-jumbotron {
+  background-color: #4ec5c1;
+  padding-top: 15px;
+  padding-bottom: 20px;
+}
+
+h1.banner-title {
+  text-align: center;
+  color: #ffffff;
+}
+
+
+
+h2.banner-sub {
+  text-align: center;
+  color: #e5e336;
+}
+
+div.landing-info-banner {
+
+  margin: 0px;
+  margin-top: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 4px;
+
+}
+
+div.b1 {
+  background-color: #ec576b;
+}
+
+div.b2 {
+  background-color: #e5e336;
+}
+
+div.b3 {
+  background-color: #4ec5c1;
+}
+
 
 /*
 aqua  color: #4ec5c1;

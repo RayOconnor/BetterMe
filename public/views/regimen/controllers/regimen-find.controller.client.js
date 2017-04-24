@@ -44,8 +44,8 @@
           });
     }
 
-    function getPrettyFrequency(regimen) {
-      switch (regimen.frequencyScope) {
+    function getPrettyFrequency(scope) {
+      switch (scope) {
         case "D":
           return "Daily";
         case "W":

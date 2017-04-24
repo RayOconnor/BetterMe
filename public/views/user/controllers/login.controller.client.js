@@ -9,7 +9,7 @@
         .login(user)
         .then(function (user) {
           if(user) {
-            $location.url('/profile');
+            $location.url('/calendar');
           }
         }, function (err) {
           model.error = "Your email and password, don't appear to be in our systems, please make sure they are correct.";

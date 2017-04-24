@@ -52,7 +52,7 @@
         .updateRegimen(vm.regimenId, vm.regimen)
         .success(function (regimen) {
           renderRegimen(regimen);
-          $location.url("/user/"+vm.userId+"/regimen");
+          $location.url("/regimen");
         });
     }
 
