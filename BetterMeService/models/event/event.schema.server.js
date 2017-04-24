@@ -6,7 +6,7 @@ module.exports = function () {
     start: {type: Date, required: true},
     end: Date,
     frequencyScope: {type: String, enum: ['D', 'W', 'M'], default: 'W'},
-    dateCreated: {type: Date, required: true},
+    dateCreated: Date,
     allDay: Boolean,
     color: String,
     _user: {type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'},

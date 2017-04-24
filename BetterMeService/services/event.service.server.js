@@ -20,6 +20,9 @@ module.exports = function (app, EventModel, UserModel) {
       })
       .then(function (event) {
         res.json(event.toObject());
+      })
+      .catch(function (error) {
+        res.status(500).send(error);
       });
   }
 

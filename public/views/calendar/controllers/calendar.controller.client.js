@@ -55,7 +55,7 @@
         };
 
         calendar.fullCalendar('renderEvent', editedEvent);
-        EventService.createEvent(editedEvent);
+        EventService.createEventForUser(editedEvent, vm.user._id);
       }
       calendar.fullCalendar('unselect');
     }

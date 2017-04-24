@@ -48,7 +48,7 @@ module.exports = function () {
         if(err) {
           d.reject(err);
         } else {
-          user.events.push(event._id);
+          user.scheduledEvents.push(event._id);
           user.save();
           d.resolve(event);
         }
