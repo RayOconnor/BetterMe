@@ -8,6 +8,7 @@
     
     vm.register = function(user, form) {
       if(!form.$valid) {
+        vm.error = "Please make sure that all the fields are valid."
         return;
       }
       UserService
@@ -20,15 +21,15 @@
     
     vm.createUser = function(user, form) {
       if(!form.$valid) {
-        return;
         vm.error = "Please make sure that all the fields are valid."
+        return;
       }
 
       UserService
         .createUser(user)
         .success(function (registerUser) {
           if (registerUser != null) {
-            $location.url("/profile");
+            $location.url("/calendar");
           } else {
             vm.error = 'user not found';
           }
