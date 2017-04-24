@@ -3,31 +3,44 @@
     .module("BetterMe")
     .controller("inviteListController", inviteListController);
 
-  function inviteListController($routeParams, $location, UserService, InviteService) {
+  function inviteListController($location, currentUser, UserService, InviteService) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
+    vm.userId = currentUser._id;
+    vm.user = currentUser;
     vm.deleteInvite = deleteInvite;
+    vm.logout = logout;
     vm.getPrettyFrequency = getPrettyFrequency;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
-
-    function init() {
-      var promise = UserService.findUserById(vm.userId);
-      promise.success(function (user) {
-        vm.user = user;
-      });
-    }
-
-    init();
+    vm.redirectToUserDetails = redirectToUserDetails;
 
     function deleteInvite(inviteId) {
       InviteService.deleteInvite(inviteId)
         .success(function () {
-          init();
+          UserService
+            .loggedin()
+            .then(function (user) {
+              if (user != '0') {
+                vm.user = user;
+              }
+            });
         });
     }
 
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
+    }
+
     function redirectToRegimenDetails(regimen) {
-      $location.url("/user/"+vm.userId+"/regimen/"+regimen._id);
+      $location.url("/regimen/"+regimen._id);
+    }
+
+    function redirectToUserDetails(user) {
+      $location.url("/user/"+user._id);
     }
 
     function getPrettyFrequency(regimen) {

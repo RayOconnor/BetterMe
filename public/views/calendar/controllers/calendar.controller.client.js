@@ -3,21 +3,25 @@
     .module("BetterMe")
     .controller("eventController", EventController);
 
-  function EventController($routeParams, $location, EventService, UserService) {
+  function EventController($location, currentUser, UserService, EventService) {
     var vm = this;
-    vm.userId = $routeParams.uid;
+    vm.userId = currentUser._id;
+    vm.user = currentUser;
+    vm.events = currentUser.scheduledEvents;
     vm.calendarDate = Date.now();
     vm.calendarScope = 'W';
 
+    vm.logout = logout;
     vm.moveEvent = moveEvent;
     vm.createEvent = createEvent;
     vm.updateEvent = updateEvent;
+    vm.deleteEvent = deleteEvent;
     vm.editEvent = editEvent;
     vm.dropEvent = dropEvent;
     vm.getJsonForEvent = getJsonForEvent;
     vm.redirectToRegimen = redirectToRegimen;
     vm.sanitizeEvent = sanitizeEvent;
-
+    vm.getScopeFromView = getScopeFromView;
 
     function init() {
       UserService
@@ -61,9 +65,24 @@
       vm.calendar.fullCalendar('updateEvent', event);
 
     }
+    
+    function deleteEvent(event) {
+      EventService.deleteEvent(event._id)
+      vm.calendar.fullCalendar('removeEvents', event._id);
+
+    }
+
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
+    }
 
     function getJsonForEvent(event) {
-      return JSON.stringify(event);
+      return JSON.stringify(sanitizeEvent(event));
     }
 
     function moveEvent(event) {
@@ -79,16 +98,30 @@
       var view = vm.calendar.fullCalendar( 'getView' );
       vm.displayedBankedEvents = vm.user.bankedEvents.filter(function (event) {
         var eventStart = new Date(event.start);
-        return view.intervalStart._d < eventStart && view.intervalEnd._d > eventStart;
+        return view.intervalStart._d < eventStart &&
+          view.intervalEnd._d > eventStart &&
+          getScopeFromView(view.name) === event.frequencyScope;
       });
     }
 
     function redirectToRegimen(regimenId) {
       $(".modal-backdrop").hide();
       $('body').removeClass('modal-open');
-      $location.url("/user/"+vm.userId+"/regimen/"+regimenId);
+      $location.url("/regimen/"+regimenId);
     }
 
+    function getScopeFromView(viewScope) {
+      switch(viewScope) {
+        case "month":
+          return 'M';
+        case "agendaWeek":
+          return 'W';
+        case "agendaDay":
+          return 'D';
+        default:
+          return "";
+      }
+    }
 
     function sanitizeEvent(event) {
       var newEvent = {};

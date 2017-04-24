@@ -1,40 +1,73 @@
-<div class="container-fluid">
-  <h1 class="header-title">Manage Your Regimens</h1>
-  <a href="#/user/{{model.userId}}/regimen/find" class="header-btn btn btn-primary">Find A Regimen</a>
-  <a ng-if="!model.user.coachedRegimens.length" href="#/user/{{model.userId}}/regimen/new" class="header-btn btn btn-success">Become A Coach!</a>
-  <a ng-if="model.user.coachedRegimens.length" href="#/user/{{model.userId}}/regimen/new" class="header-btn btn btn-success">Create Another Regimen</a>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><i class="fa fa-calendar-check-o"></i> BetterMe</a>
+    </div>
 
-  <h3>Enlisted Regimens</h3>
-  <h4 ng-if="!model.user.enlistedRegimens.length"> You are not currently enrolled in any regimens</h4>
-  <table ng-if="model.user.enlistedRegimens.length" class="table table-hover">
-    <thead>
-    <tr>
-      <th>Title</th>
-      <th>Frequency</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="regimen in model.user.enlistedRegimens" ng-click="model.redirectToRegimenDetails(regimen)">
-      <td>{{regimen.title}}</td>
-      <td>{{regimen.frequencyNumber}} times {{model.getPrettyFrequency(regimen)}}</td>
-    </tr>
-    </tbody>
-  </table>
-  <div ng-if="model.user.coachedRegimens.length">
-    <h3>Coached Regimens</h3>
-    <table class="table table-hover">
-      <thead>
-      <tr>
-        <th>Title</th>
-        <th>Frequency</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="regimen in model.user.coachedRegimens" ng-click="model.redirectToRegimenDetails(regimen)">
-        <td>{{regimen.title}}</td>
-        <td>{{regimen.frequencyNumber}} times {{model.getPrettyFrequency(regimen)}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#/profile">My Profile <span class="sr-only">(current)</span></a></li>
+        <li><a href="#/calendar">My Calendar</a></li>
+        <li class="active"><a href="#/regimen">My Regimens</a></li>
+        <li><a href="#/invite">My Invites</a></li>
+        <li><a href="#/regimen/find">Find Regimens</a></li>
+        <li ng-if="model.user.admin"><a href="#/admin">Admin</a></li>
+        <li><a href="" ng-click="model.logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="col-lg-offset-4 col-md-offset-3 col-sm-offset-2 col-lg-4 col-md-6 col-sm-8">
+    <h1>Manage Your Regimens</h1>
+
+    <h3 class="table-title">Enlisted Regimens</h3>
+    <h4 ng-if="!model.user.enlistedRegimens.length"> You are not currently enrolled in any regimens</h4>
+    <div>
+      <table ng-if="model.user.enlistedRegimens.length" class="table table-hover">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Frequency</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="regimen in model.user.enlistedRegimens" ng-click="model.redirectToRegimenDetails(regimen)">
+          <td>{{regimen.title}}</td>
+          <td>{{regimen.frequencyNumber}} times {{model.getPrettyFrequency(regimen)}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div ng-if="model.user.coachedRegimens.length">
+      <h3>Coached Regimens</h3>
+      <div>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>Title</th>
+            <th>Frequency</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="regimen in model.user.coachedRegimens" ng-click="model.redirectToRegimenDetails(regimen)">
+            <td>{{regimen.title}}</td>
+            <td>{{regimen.frequencyNumber}} times {{model.getPrettyFrequency(regimen)}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <a ng-if="model.user.coachedRegimens.length" href="#/regimen/new" class="table-header-button col-xs-12 btn btn-primary">Create A Regimen</a>
+    <a ng-if="!model.user.coachedRegimens.length" href="#/regimen/new" class="table-header-button col-xs-12 btn btn-primary">Become A Coach!</a>
   </div>
 </div>

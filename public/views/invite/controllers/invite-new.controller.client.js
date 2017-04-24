@@ -3,21 +3,23 @@
     .module("BetterMe")
     .controller("inviteNewController", inviteNewController);
 
-  function inviteNewController($routeParams, $location, RegimenService, UserService, InviteService) {
+  function inviteNewController($location, currentUser, RegimenService, UserService, InviteService) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
-    vm.invite = {};
+    vm.userId = currentUser._id;
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
     vm.updateDisplayedUsers = updateDisplayedUsers;
+    vm.logout = logout;
     vm.getCommitment = getCommitment;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
     vm.sendInvite = sendInvite;
-    vm.searchRegimen = "";
-    vm.displayedRegimens = [];
-    vm.allRegimens = [];
-    
+    vm.getPrettyFrequency = getPrettyFrequency;
+    vm.redirectToUserDetails = redirectToUserDetails;
 
     function init() {
+      vm.invite = {};
+      vm.searchRegimen = "";
+      vm.displayedRegimens = [];
+      vm.allRegimens = [];
       var promise = RegimenService.findAllRegimens();
       promise.success(function (regimens) {
         vm.displayedRegimens = regimens;
@@ -41,7 +43,7 @@
         .createInvite(vm.invite)
         .success(function (invite) {
           if (invite != null) {
-            $location.url('/user/' + vm.userId +'/invite');
+            $location.url('/invite');
           } else {
             vm.error = 'invite not sent';
           }
@@ -50,8 +52,13 @@
 
     }
 
-    function getCommitment(regimen) {
-      return "Commitment: " + regimen.frequencyNumber + " times " + regimen.frequencyScope ;
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
     }
 
     function updateDisplayedRegimens() {
@@ -68,7 +75,26 @@
     }
 
     function redirectToRegimenDetails(regimen) {
-      $location.url("/user/"+vm.userId+"/regimen/"+regimen._id);
+      $location.url("/regimen/"+regimen._id);
+    }
+
+    function redirectToUserDetails(user) {
+      $location.url("/user/"+user._id);
+    }
+
+    function getCommitment(regimen) {
+      return "Commitment: " + regimen.frequencyNumber + " times " + regimen.frequencyScope ;
+    }
+
+    function getPrettyFrequency(regimen) {
+      switch (regimen.frequencyScope) {
+        case "D":
+          return "Daily";
+        case "W":
+          return "Weekly";
+        default:
+          return "Yearly";
+      }
     }
   }
 })();

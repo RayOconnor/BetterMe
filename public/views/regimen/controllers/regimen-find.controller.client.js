@@ -3,12 +3,13 @@
     .module("BetterMe")
     .controller("regimenFindController", regimenFindController);
 
-  function regimenFindController($routeParams, $location, RegimenService) {
+  function regimenFindController($routeParams, $location, UserService, RegimenService) {
     var vm = this;
-    vm.userId = $routeParams['uid'];
+    //vm.userId = $routeParams['uid'];
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
     vm.getCommitment = getCommitment;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
+    vm.logout = logout;
     vm.searchRegimen = "";
     vm.displayedRegimens = [];
     vm.allRegimens = [];
@@ -24,7 +25,7 @@
     init();
 
     function getCommitment(regimen) {
-      return "Commitment: " + regimen.frequencyNumber + " times " + regimen.frequencyScope ;
+      return regimen.frequencyNumber + " times " + getPrettyFrequency(regimen.frequencyScope);
     }
 
     function updateDisplayedRegimens() {
@@ -34,8 +35,30 @@
       })
     }
 
-    function redirectToRegimenDetails(regimen) {
-      $location.url("/user/"+vm.userId+"/regimen/"+regimen._id);
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
     }
+
+    function getPrettyFrequency(regimen) {
+      switch (regimen.frequencyScope) {
+        case "D":
+          return "Daily";
+        case "W":
+          return "Weekly";
+        default:
+          return "Yearly";
+      }
+    }
+
+    function redirectToRegimenDetails(regimen) {
+      $location.url("/regimen/"+regimen._id);
+    }
+    
+    
   }
 })();

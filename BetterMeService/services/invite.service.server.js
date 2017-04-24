@@ -1,6 +1,7 @@
 module.exports = function (app, InviteModel, UserModel) {
   app.post("/api/invite", createInvite);
-  //app.get("/api/invite", getInvites);
+  app.get("/api/invite/:inviteId", findInviteById);
+  app.get("/api/invite", findAllInvites);
   app.get("/api/invite/user/:userId", getInvitesForUser);
   app.put("/api/invite/:inviteId", updateInvite);
   app.delete("/api/invite/:inviteId", deleteInvite);
@@ -23,6 +24,28 @@ module.exports = function (app, InviteModel, UserModel) {
         res.sendStatus(500).send(error);
       });
   }
+
+  function findInviteById(req, res) {
+    var inviteId = req.params.inviteId;
+    InviteModel.findInviteById(inviteId)
+      .then(function (invite) {
+        res.json(invite);
+      })
+      .catch(function (error) {
+        res.sendStatus(500).send(error);
+      })
+  }
+
+  function findAllInvites(req, res) {
+    InviteModel.findAllInvites()
+      .then(function (invites) {
+        res.json(invites);
+      })
+      .catch(function (error) {
+        res.sendStatus(500).send(error);
+      })
+  }
+
 
   function getInvitesForUser(req, res) {
     var userId = req.params.userId;

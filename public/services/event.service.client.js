@@ -7,6 +7,8 @@
 
     var api = {
       createEventForUser: createEventForUser,
+      findAllEvents: findAllEvents,
+      findEventById: findEventById,
       getEventsForUser: getEventsForUser,
       updateEvent: updateEvent,
       moveEvent: moveEvent,
@@ -16,6 +18,14 @@
     
     function createEventForUser(event, userId) {
       return $http.post("/api/event/user/"+userId, event);
+    }
+
+    function findEventById(eventId) {
+      return $http.get("/api/event/"+eventId);
+    }
+
+    function findAllEvents() {
+      return $http.get("/api/event");
     }
     
     function getEventsForUser(userId) {

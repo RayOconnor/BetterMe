@@ -5,10 +5,6 @@
 
   function registerController(UserService, $location, $rootScope) {
     var vm = this;
-
-    function init() {
-    }
-    init();
     
     vm.register = function(user, form) {
       if(!form.$valid) {
@@ -16,10 +12,9 @@
       }
       UserService
         .register(user)
-        .then(function (response) {
-          var user = response.data;
+        .then(function (user) {
           $rootScope.currentUser = user;
-          $location.url("/user/" + user._id);
+          $location.url("/profile");
         });
     };
     
@@ -32,7 +27,7 @@
         .createUser(user)
         .success(function (registerUser) {
           if (registerUser != null) {
-            $location.url('/user/' + registerUser._id);
+            $location.url("/profile");
           } else {
             vm.error = 'user not found';
           }

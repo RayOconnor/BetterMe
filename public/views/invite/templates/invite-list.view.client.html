@@ -1,41 +1,74 @@
-<div class="container-fluid">
-  <h1 class="header-title">Manage Your Invites</h1>
-  <a href="#/user/{{model.userId}}/invite/new" class="header-btn btn btn-primary">Send An Invite</a>
-  <h3>Sent Invites</h3>
-  <table ng-if="model.user.sentInvites.length" class="table table-hover">
-    <thead>
-    <tr>
-      <th></th>
-      <th>To</th>
-      <th>Regimen</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="invite in model.user.sentInvites">
-      <td ng-click="model.deleteInvite(invite._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
-      <td>{{invite._sender.firstName}} {{invite._sender.lastName}}</td>
-      <td ng-click="model.redirectToRegimenDetails(invite._regimen)">{{invite._regimen.title}}</td>
-    </tr>
-    </tbody>
-  </table>
-  <h4 ng-if="!model.user.sentInvites.length">All sent invites have been resolved</h4>
-  <h3>Received Invites</h3>
-  <table ng-if="model.user.receivedInvites.length" class="table table-hover">
-    <thead>
-    <tr>
-      <th></th>
-      <th>From</th>
-      <th>Regimen</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="invite in model.user.receivedInvites" ng-click="model.redirectToRegimenDetails(invite._regimen)">
-      <td ng-click="model.deleteInvite(invite._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
-      <td>{{invite._recipient.firstName}} {{invite._sender.lastName}}</td>
-      <td ng-click="model.redirectToRegimenDetails(invite._regimen)">{{invite._regimen.title}}</td>
-    </tr>
-    </tbody>
-  </table>
-  <h4 ng-if="!model.user.receivedInvites.length">All received invites have been resolved</h4>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><i class="fa fa-calendar-check-o"></i> BetterMe</a>
+    </div>
 
+    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#/profile">My Profile <span class="sr-only">(current)</span></a></li>
+        <li><a href="#/calendar">My Calendar</a></li>
+        <li><a href="#/regimen">My Regimens</a></li>
+        <li class="active"><a href="#/invite">My Invites</a></li>
+        <li><a href="#/regimen/find">Find Regimens</a></li>
+        <li ng-if="model.user.admin"><a href="#/admin">Admin</a></li>
+        <li><a href="" ng-click="model.logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="col-sm-offset-2 col-sm-8">
+    <h1>Manage Your Invites</h1>
+    <div class='col-md-6'>
+      <h3 class="table-title">Sent Invites</h3>
+      <table ng-if="model.user.sentInvites.length" class="table table-hover">
+        <thead>
+        <tr>
+          <th></th>
+          <th>To</th>
+          <th>Regimen</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="invite in model.user.sentInvites">
+          <td ng-click="model.deleteInvite(invite._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
+          <td ng-click="model.redirectToUserDetails(invite._recipient)">{{invite._sender.firstName}} {{invite._sender.lastName}}</td>
+          <td ng-click="model.redirectToRegimenDetails(invite._regimen)">{{invite._regimen.title}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <h4 ng-if="!model.user.sentInvites.length">All sent invites have been resolved</h4>
+    </div>
+    <div class='col-md-6'>
+      <h3>Received Invites</h3>
+      <table ng-if="model.user.receivedInvites.length" class="table table-hover">
+        <thead>
+        <tr>
+          <th></th>
+          <th>From</th>
+          <th>Regimen</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="invite in model.user.receivedInvites" ng-click="model.redirectToRegimenDetails(invite._regimen)">
+          <td ng-click="model.deleteInvite(invite._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
+          <td ng-click="model.redirectToUserDetails(invite._recipient)">{{invite._recipient.firstName}} {{invite._sender.lastName}}</td>
+          <td ng-click="model.redirectToRegimenDetails(invite._regimen)">{{invite._regimen.title}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h4 ng-if="!model.user.receivedInvites.length">All received invites have been resolved</h4>
+    </div>
+    <a href="#/invite/new" class="col-xs-12 btn-primary btn">Send An Invite</a>
+  </div>
 </div>

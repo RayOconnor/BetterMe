@@ -17,36 +17,39 @@
         <li><a href="#/calendar">My Calendar</a></li>
         <li><a href="#/regimen">My Regimens</a></li>
         <li><a href="#/invite">My Invites</a></li>
-        <li class="active"><a href="#/regimen/find">Find Regimens</a></li>
-        <li ng-if="model.user.admin"><a href="#/admin">Admin</a></li>
+        <li><a href="#/regimen/find">Find Regimens</a></li>
+        <li class="active"><a href="#/admin">Admin</a></li>
         <li><a href="" ng-click="model.logout()">Logout</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="container-fluid">
-  <div class="col-sm-offset-2 col-sm-8">
-    <h3>Find a Regimen That Appeals To You</h3>
-    <input ng-model="model.searchRegimen"
-           class="form-control"
-           placeholder="Search by Regimen's Title or Coach's Username"
-           ng-change="model.updateDisplayedRegimens()">
-    <table class="table table-hover">
-      <thead>
-      <tr>
-        <th>Title</th>
-        <th>Coach</th>
-        <th>Frequency</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="regimen in model.displayedRegimens" ng-click="model.redirectToRegimenDetails(regimen)">
-        <td>{{regimen.title}}</td>
-        <td>{{regimen._coach.firstName}} {{regimen._coach.lastName}}</td>
-        <td>{{model.getCommitment(regimen)}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<h1>Admin</h1>
+
+<ul class="list-group">
+  <input ng-model="model.userSearchTerm"
+         class="form-control"
+         placeholder="Search By User's Email"
+         ng-change="model.updateDisplayedUsers()">
+  <table ng-if="model.displayedUsers.length" class="table table-hover">
+    <thead>
+    <tr>
+      <th></th>
+      <th>Email</th>
+      <th>First</th>
+      <th>Last</th>
+      <th>Admin</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in model.displayedUsers" ng-click="model.redirectToUserDetails(user._id)">
+      <td ng-click="model.deleteUser(user._id)"><i class="fa fa-trash" aria-hidden="true"></i></td>
+      <td>{{user.email}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.admin}}</td>
+    </tr>
+    </tbody>
+  </table>
+</ul>

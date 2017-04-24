@@ -53,16 +53,21 @@
                 scope.model.moveEvent(droppedEvent);
 
               },
-              eventReceive: function(event) {
-                var newEvent = event;
-              },
               /*
                events is the main option for calendar.
                for demo we have added predefined events in json object.
                */
-              events: events,
+              googleCalendarApiKey: "AIzaSyBIm3OEeWcB1VkwZKgUvRmGbbb1YYi-zlo",
+              eventSources: [
+                {
+                  googleCalendarId: scope.model.user.googleCalendarId,
+                  color: "#000000",
+                  className: 'gcal-event'
+                },
+                events
+              ],
               eventClick: function (event) {
-                scope.model.editedEvent = event;
+                scope.model.editedEvent = scope.model.sanitizeEvent(event);
                 scope.$apply();
                 scope.model.editEvent();
               },
@@ -72,19 +77,27 @@
                 scope.model.view = view;
                 scope.model.displayedBankedEvents = scope.model.user.bankedEvents.filter(function (event) {
                   var eventStart = new Date(event.start);
-                  return view.intervalStart._d < eventStart && view.intervalEnd._d > eventStart;
+                  return view.intervalStart._d < eventStart &&
+                    view.intervalEnd._d > eventStart &&
+                    scope.model.getScopeFromView(view.name) === event.frequencyScope;
                 });
                 $rootScope.$$phase || $rootScope.$apply();
               }
-        });
+
+            });
           scope.model.calendar = calendar;
+
         }
+
       });
 
     }
+
     return {
       link: linkFunc
     };
+
+
 
   }
 })();

@@ -1,5 +1,30 @@
 
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><i class="fa fa-calendar-check-o"></i> BetterMe</a>
+    </div>
 
+    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#/profile">My Profile <span class="sr-only">(current)</span></a></li>
+        <li><a href="#/calendar">My Calendar</a></li>
+        <li class="active"><a href="#/regimen">My Regimens</a></li>
+        <li><a href="#/invite">My Invites</a></li>
+        <li><a href="#/regimen/find">Find Regimens</a></li>
+        <li ng-if="model.user.admin"><a href="#/admin">Admin</a></li>
+        <li><a href="" ng-click="model.logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <div class="container-fluid">
   <h1>{{model.regimen.title}}</h1>
@@ -71,7 +96,11 @@
     </form>
   </div>
   <div ng-if="!model.isCoach">
+    <br/>
     <h4>This regimen occurs {{model.regimen.frequencyNumber}} times {{model.regimen.frequencyScope}}</h4>
+    <a href="/#/user/{{model.regimen._coach}}"><h4>View this regimen's coach</h4></a>
+    <br/>
+
     <h4>Start: {{model.regimen.start}}</h4>
     <h4>End: {{model.regimen.end}}</h4>
 
@@ -82,10 +111,3 @@
   <button ng-click="model.unEnlistUser()" ng-disabled="!model.isUserEnlisted" type="submit" class="navbar-btn btn btn-danger">Unenlist</button>
   <button ng-click="model.deleteRegimen()" ng-if="model.isCoach" type="submit" class="navbar-btn btn btn-danger">Delete Regimen</button>
 </div>
-
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div class="container">
-    <a class="glyphicon glyphicon-user footer-nav-right-icon" aria-hidden="true" href="#/user/{{model.user._id}}"></a>
-  </div>
-</nav>

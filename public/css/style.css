@@ -12,6 +12,7 @@ div.regimen-bank {
 
 div.banked-event {
   margin: 5px;
+  z-index: 100;
 }
 
 input.form-control {
@@ -65,7 +66,6 @@ div.ta-scroll-window.form-control {
 }
 
 a.header-btn {
-  transform: translateY(+65%);
   float: right;
   margin-left:  10px;
 }
@@ -78,3 +78,33 @@ div.modal-page {
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+a.gcal-event {
+  pointer-events: none;
+  cursor: default;
+}
+
+.table-title {
+  display: inline-block;
+}
+
+.table-header-button {
+  margin-top: 20px;
+}
+
+input.table-radio {
+  position: relative !important;
+  margin: 0px !important;
+}
+
+div.radio {
+  margin: 0px;
+}
+
+
+/*
+aqua  color: #4ec5c1;
+lime  color: #e5e336;
+pink  color: #ec576b;
+black color: #000000;
+*/

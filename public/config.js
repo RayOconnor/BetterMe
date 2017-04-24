@@ -16,81 +16,128 @@
         controller: 'registerController',
         controllerAs: 'model'
       })
-      .when("/user/:uid",{
+      .when("/profile",{
         templateUrl: 'views/user/templates/profile.view.client.html',
         controller: 'profileController',
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
+      })
+      .when("/user/:uid",{
+        templateUrl: 'views/user/templates/profile-display.view.client.html',
+        controller: 'profileDisplayController',
         controllerAs: 'model'
       })
-      .when("/user/:uid/calendar",{
+      .when("/calendar",{
         templateUrl: 'views/calendar/templates/calendar.view.client.html',
         controller: 'eventController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
       })
-      .when("/user/:uid/regimen/find",{
+      .when("/regimen/find",{
         templateUrl: 'views/regimen/templates/regimen-find.view.client.html',
         controller: 'regimenFindController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
       })
-      .when("/user/:uid/regimen", {
+      .when("/regimen", {
         templateUrl: 'views/regimen/templates/regimen-list.view.client.html',
         controller: 'regimenListController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
       })
-      .when("/user/:uid/regimen/new",{
+      .when("/regimen/new",{
         templateUrl: 'views/regimen/templates/regimen-new.view.client.html',
         controller: 'regimenNewController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
       })
-      .when("/user/:uid/regimen/:rid",{
+      .when("/regimen/:rid",{
         templateUrl: 'views/regimen/templates/regimen-details.view.client.html',
         controller: 'regimenDetailsController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
       })
-      .when("/user/:uid/invite", {
+      .when("/invite", {
         templateUrl: 'views/invite/templates/invite-list.view.client.html',
         controller: 'inviteListController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
       })
-      .when("/user/:uid/invite/new", {
+      .when("/invite/new", {
         templateUrl: 'views/invite/templates/invite-new.view.client.html',
         controller: 'inviteNewController',
-        controllerAs: 'model'
+        controllerAs: 'model',
+        resolve: {
+          currentUser: checkLogin
+        }
+      })
+      .when("/google-calendar-help", {
+        templateUrl: 'views/help/google-calendar-help.view.client.html'
+      })
+      .when("/admin", {
+        templateUrl: 'views/admin/templates/admin.view.client.html',
+        controller: 'adminController',
+        controllerAs: 'model',
+        resolve: {
+          adminUser: isAdmin
+        }
+      })
+      .when("/admin/user/:userId", {
+        templateUrl: 'views/admin/templates/admin-user-edit.view.client.html',
+        controller: 'adminUserEditController',
+        controllerAs: 'model',
+        resolve: {
+          adminUser: isAdmin
+        }
       })
       .otherwise({
-        templateUrl: 'views/user/templates/login.view.client.html',
-        controller: 'loginController',
-        controllerAs: 'model'
+        redirectTo: '/login'
       });
   }
 
-  var checkLoggedin = function($q, $timeout, $http, $location, $rootScope) {
-    var deferred = $q.defer();
-    $http.get('/api/loggedin').success(function(user) {
-      $rootScope.errorMessage = null;
-      if (user !== '0') {
-        $rootScope.currentUser = user;
-        deferred.resolve();
-      } else {
-        deferred.reject();
-        $location.url('/');
-      }
-    });
-    return deferred.promise;
-  };
+  function checkLogin($q, UserService, $location) {
+    var deffered = $q.defer();
+    UserService
+      .loggedin()
+      .then(function (user) {
+        if(user == '0') {
+          deffered.reject();
+          $location.url('/login')
+        } else {
+          deffered.resolve(user);
+        }
+      });
+    return deffered.promise;
+  }
 
-  var checkAdmin = function ($q, $location) {
-    var defer = $q.defer();
+  function isAdmin($q, UserService, $location) {
+    var deffered = $q.defer();
     UserService
       .isAdmin()
       .then(function (user) {
-        if(user != '0') {
-          defer.resolve(user);
+        if(user == '0') {
+          deffered.reject();
+          $location.url('/profile')
         } else {
-          defer.reject();
-          $location.url('/profile');
+          deffered.resolve(user);
         }
       });
-    return defer.promise;
-  };
+    return deffered.promise;
+  }
+
 
 })();

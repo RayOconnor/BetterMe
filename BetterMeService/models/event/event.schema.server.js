@@ -5,7 +5,7 @@ module.exports = function () {
     title: {type: String, required: true},
     start: {type: Date, required: true},
     end: Date,
-    frequencyScope: {enum: ['D', 'W', 'M']},
+    frequencyScope: {type: String, enum: ['D', 'W', 'M'], default: 'W'},
     dateCreated: {type: Date, required: true},
     allDay: Boolean,
     color: String,

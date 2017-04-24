@@ -1,6 +1,5 @@
 module.exports = function (app, RegimenModel, UserModel, EventModel, InviteModel) {
   app.post("/api/regimen", createRegimen);
-  //app.get("/api/regimen", getRegimens);
   app.get("/api/regimen/user/:userId", getRegimensForUser);
   app.get("/api/regimen/:regimenId", findRegimenById);
   app.get("/api/regimen", findAllRegimens);
