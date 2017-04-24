@@ -105,15 +105,18 @@
     }
 
     function getPrettyFrequency() {
-      switch (vm.regimen.frequencyScope) {
-        case "D":
-          return "Daily";
-        case "W":
-          return "Weekly";
-        default:
-          return "Yearly";
+      if (vm.regimen) {
+        switch (vm.regimen.frequencyScope) {
+          case "D":
+            return "Daily";
+          case "W":
+            return "Weekly";
+          default:
+            return "Yearly";
+        }
+      } else {
+        return "";
       }
     }
-
   }
 })();
