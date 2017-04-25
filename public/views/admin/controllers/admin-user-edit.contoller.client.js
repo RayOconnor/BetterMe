@@ -35,7 +35,11 @@
         vm.error = "Please make sure that all the fields are valid."
         return;
       }
-      vm.user.password = vm.password1;
+      if (vm.password1) {
+        vm.user.password = vm.password1;
+      } else {
+        delete vm.user.password;
+      }
       UserService
         .updateUser(vm.userId, vm.user)
         .success(function ()  {
