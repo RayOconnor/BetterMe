@@ -107,6 +107,9 @@
 
 
     function getPrettyFrequency() {
+      if (!vm.regimen) {
+        return "";
+      }
       switch (vm.regimen.frequencyScope) {
         case "D":
           return "Daily";
