@@ -245,7 +245,9 @@ module.exports = function (app, UserModel, EventModel, RegimenModel) {
   function updateUser(req, res) {
     var userId = req.params.userId;
     var newUser = req.body;
-    newUser.password = bcrypt.hashSync(newUser.password);
+    if (newUser.password) {
+      newUser.password = bcrypt.hashSync(newUser.password);
+    }
     UserModel
       .updateUser(userId, newUser)
       .then(function(user) {
