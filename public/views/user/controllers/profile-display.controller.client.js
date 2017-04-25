@@ -17,7 +17,7 @@
         .findUserById(vm.userId)
         .success(function (user) {
           vm.user = user;
-        })
+        });
       UserService
         .loggedin()
         .then(function (user) {

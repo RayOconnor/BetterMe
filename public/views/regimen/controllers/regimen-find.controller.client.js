@@ -7,14 +7,14 @@
     var vm = this;
     //vm.userId = $routeParams['uid'];
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
-    vm.getCommitment = getCommitment;
     vm.redirectToRegimenDetails = redirectToRegimenDetails;
     vm.logout = logout;
-    vm.searchRegimen = "";
-    vm.displayedRegimens = [];
-    vm.allRegimens = [];
+    vm.getCommitment = getCommitment;
 
     function init() {
+      vm.searchRegimen = "";
+      vm.displayedRegimens = [];
+      vm.allRegimens = [];
       var promise = RegimenService.findAllRegimens();
       promise.success(function (regimens) {
         vm.displayedRegimens = regimens;
@@ -24,8 +24,13 @@
 
     init();
 
-    function getCommitment(regimen) {
-      return regimen.frequencyNumber + " times " + getPrettyFrequency(regimen.frequencyScope);
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
     }
 
     function updateDisplayedRegimens() {
@@ -35,14 +40,10 @@
       })
     }
 
-    function logout() {
-      UserService
-        .logout()
-        .then(
-          function () {
-            $location.url("/");
-          });
+    function getCommitment(regimen) {
+      return regimen.frequencyNumber + " times " + getPrettyFrequency(regimen.frequencyScope);
     }
+
 
     function getPrettyFrequency(scope) {
       switch (scope) {

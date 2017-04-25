@@ -81,19 +81,18 @@
           });
     }
 
-    function getJsonForEvent(event) {
-      return JSON.stringify(sanitizeEvent(event));
-    }
-
     function moveEvent(event) {
       EventService
         .moveEvent(event)
         .success(function () {
           init();
         });
-
     }
-
+    
+    function getJsonForEvent(event) {
+      return JSON.stringify(sanitizeEvent(event));
+    }
+    
     function updateDisplayedBankedEvents() {
       var view = vm.calendar.fullCalendar( 'getView' );
       vm.displayedBankedEvents = vm.user.bankedEvents.filter(function (event) {

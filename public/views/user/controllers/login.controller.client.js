@@ -3,15 +3,17 @@
     .controller('loginController', loginController);
 
   function loginController($location, UserService) {
-    var model = this;
-    model.login = function (user) {
+    var vm = this;
+    vm.login = login;
+
+    function login(user) {
       UserService
         .login(user)
         .then(function (user) {
           if(user) {
             $location.url('/calendar');
           }
-        }, function (err) {
+        }, function () {
           model.error = "Your email and password, don't appear to be in our systems, please make sure they are correct.";
         });
     }

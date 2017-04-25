@@ -27,13 +27,6 @@
     }
 
     init();
-
-    function renderRegimen(regimen) {
-      regimen.start = displayDate(regimen.start);
-      regimen.end = displayDate(regimen.end);
-      vm.regimen = regimen;
-      vm.isCoach = vm.userId === regimen._coach;
-    }
     
     function deleteRegimen() {
       RegimenService
@@ -66,18 +59,6 @@
           });
     }
 
-    function isRegimenCoach(coach) {
-      return vm.userId === coach;
-    }
-
-    function setEnlisted() {
-      return vm.regimen.cadettes.includes(vm.userId);
-    }
-
-    function getTrustedHtml(html) {
-      return $sce.trustAsHtml(html);
-    }
-    
     function enlistUser() {
       UserService
         .enlistUser(vm.userId, vm.regimenId)
@@ -85,6 +66,13 @@
           renderRegimen(regimen);
           $location.url("/regimen");
         });
+    }
+
+    function renderRegimen(regimen) {
+      regimen.start = displayDate(regimen.start);
+      regimen.end = displayDate(regimen.end);
+      vm.regimen = regimen;
+      vm.isCoach = vm.userId === regimen._coach;
     }
 
     function unEnlistUser() {
@@ -103,6 +91,20 @@
       var curr_year = d.getFullYear();
       return curr_month + "/" + curr_date + "/" + curr_year;
     }
+
+
+    function isRegimenCoach(coach) {
+      return vm.userId === coach;
+    }
+
+    function setEnlisted() {
+      return vm.regimen.cadettes.includes(vm.userId);
+    }
+
+    function getTrustedHtml(html) {
+      return $sce.trustAsHtml(html);
+    }
+
 
     function getPrettyFrequency() {
       switch (vm.regimen.frequencyScope) {
