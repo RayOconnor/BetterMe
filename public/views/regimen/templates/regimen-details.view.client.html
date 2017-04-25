@@ -19,7 +19,7 @@
         <li class="active"><a href="#/regimen">My Regimens</a></li>
         <li><a href="#/invite">My Invites</a></li>
         <li><a href="#/regimen/find">Find Regimens</a></li>
-        <li ng-if="model.user.admin"><a href="#/admin">Admin</a></li>
+        <li ng-if="model.isUserAdmin"><a href="#/admin">Admin</a></li>
         <li><a href="" ng-click="model.logout()">Logout</a></li>
       </ul>
     </div>
@@ -28,7 +28,7 @@
 
 <div class="container-fluid">
   <h1>{{model.regimen.title}}</h1>
-  <div ng-if="model.isCoach">
+  <div ng-if="model.isAuthorizedToEdit">
     <div ng-show="model.error" class="alert alert-danger" role="alert">
       {{model.error}}
     </div>
@@ -97,7 +97,7 @@
       <button ng-click="model.updateRegimen(form1)" type="submit" class="btn btn-block btn-primary">Update Details</button>
     </form>
   </div>
-  <div ng-if="!model.isCoach">
+  <div ng-if="!model.isAuthorizedToEdit">
     <br/>
     <h4>This regimen occurs {{model.regimen.frequencyNumber}} time(s) {{model.getPrettyFrequency()}}</h4>
     <a href="/#/user/{{model.regimen._coach}}"><h4>View this regimen's coach</h4></a>
@@ -109,7 +109,12 @@
     <br/>
     <div ng-bind-html="model.getTrustedHtml(model.regimen.description)"></div>
   </div>
-  <button ng-click="model.enlistUser()" ng-disabled="model.isUserEnlisted" type="submit" class="navbar-btn btn btn-primary">Enlist</button>
-  <button ng-click="model.unEnlistUser()" ng-disabled="!model.isUserEnlisted" type="submit" class="navbar-btn btn btn-danger">Unenlist</button>
-  <button ng-click="model.deleteRegimen()" ng-if="model.isCoach" type="submit" class="navbar-btn btn btn-danger">Delete Regimen</button>
+  <div ng-if="model.isLoggedIn">
+    <button ng-click="model.enlistUser()" ng-disabled="model.isUserEnlisted" type="submit" class="navbar-btn btn btn-primary">Enlist</button>
+    <button ng-click="model.unEnlistUser()" ng-disabled="!model.isUserEnlisted" class="navbar-btn btn btn-danger">Unenlist</button>
+    <button ng-click="model.deleteRegimen()" ng-if="model.isAuthorizedToEdit" class="navbar-btn btn btn-danger">Delete Regimen</button>
+  </div>
+  <div ng-if=!model.isLoggedIn>
+    <a href="/#/register" class="navbar-btn btn-block btn btn-primary">Register To Join!</a>
+  </div>
 </div>

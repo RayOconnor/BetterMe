@@ -3,7 +3,7 @@
     .module("BetterMe")
     .controller("regimenDetailsController", regimenDetailsController);
 
-  function regimenDetailsController($routeParams, $location, $sce, currentUser, RegimenService, UserService) {
+  function regimenDetailsController($rootScope, $routeParams, $location, $sce, currentUser, RegimenService, UserService) {
     var vm = this;
     vm.regimenId = $routeParams.rid;
     vm.userId = currentUser._id;
@@ -11,7 +11,6 @@
     vm.enlistUser = enlistUser;
     vm.unEnlistUser = unEnlistUser;
     vm.getTrustedHtml = getTrustedHtml;
-    vm.isRegimenCoach = isRegimenCoach;
     vm.displayDate = displayDate;
     vm.updateRegimen = updateRegimen;
     vm.deleteRegimen = deleteRegimen;
@@ -22,7 +21,8 @@
       var promise = RegimenService.findRegimenById(vm.regimenId);
       promise.success(function (regimen) {
         renderRegimen(regimen);
-        vm.isUserEnlisted = setEnlisted();
+        initUserInfo(regimen);
+        //vm.isUserEnlisted = setEnlisted();
       });
     }
 
@@ -72,7 +72,6 @@
       regimen.start = displayDate(regimen.start);
       regimen.end = displayDate(regimen.end);
       vm.regimen = regimen;
-      vm.isCoach = vm.userId === regimen._coach;
     }
 
     function unEnlistUser() {
@@ -92,7 +91,21 @@
       return curr_month + "/" + curr_date + "/" + curr_year;
     }
 
+    function initUserInfo(regimen) {
+      if (currentUser === '0') {
+        vm.isLoggedIn = false;
+        vm.isUserAdmin = false;
+        vm.isAuthorizedToEdit = false;
+        vm.isUserEnlisted = false;
+      } else {
+        vm.isLoggedIn = true;
+        vm.isUserAdmin = currentUser.admin;
+        vm.isAuthorizedToEdit = vm.isUserAdmin || vm.userId === regimen._coach;
+        vm.isUserEnlisted = regimen.cadettes.includes(vm.userId);
+      }
 
+    }
+    /*
     function isRegimenCoach(coach) {
       return vm.userId === coach;
     }
@@ -100,6 +113,7 @@
     function setEnlisted() {
       return vm.regimen.cadettes.includes(vm.userId);
     }
+    */
 
     function getTrustedHtml(html) {
       return $sce.trustAsHtml(html);
