@@ -22,7 +22,6 @@
       promise.success(function (regimen) {
         renderRegimen(regimen);
         initUserInfo(regimen);
-        //vm.isUserEnlisted = setEnlisted();
       });
     }
 
@@ -105,15 +104,6 @@
       }
 
     }
-    /*
-    function isRegimenCoach(coach) {
-      return vm.userId === coach;
-    }
-
-    function setEnlisted() {
-      return vm.regimen.cadettes.includes(vm.userId);
-    }
-    */
 
     function getTrustedHtml(html) {
       return $sce.trustAsHtml(html);
