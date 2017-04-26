@@ -77,7 +77,7 @@
                 scope.model.view = view;
                 scope.model.displayedBankedEvents = scope.model.user.bankedEvents.filter(function (event) {
                   var eventStart = new Date(event.start);
-                  return view.intervalStart._d < eventStart &&
+                  return view.intervalStart._d <= eventStart &&
                     view.intervalEnd._d > eventStart &&
                     scope.model.getScopeFromView(view.name) === event.frequencyScope;
                 });
