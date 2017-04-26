@@ -35,13 +35,17 @@
     <h1>{{model.user.firstName}} {{model.user.lastName}} </h1>
 
     <div ng-bind-html="model.getTrustedHtml(model.user.profileBio)"></div>
+    <h3 ng-if="!model.user.profileBio">This page is sparse because this user has yet to complete their bio.
+      <br/><br/>If you know this user, tap them on the shoulder and tell them to get their act together
+      <br/><br/>The first step to a BetterMe is getting a BetterBio.
+      <br/><br/>I mean seriously, nothing?!</h3>
 
     <div class="row">
       <div ng-if="model.user.enlistedRegimens.length" class="col-sm-6">
         <table class="table table-hover">
           <thead>
           <tr>
-            <th>Brian enlisted in these regimens</th>
+            <th>{{model.user.firstName}} enlisted in these regimens</th>
           </tr>
           </thead>
           <tbody>

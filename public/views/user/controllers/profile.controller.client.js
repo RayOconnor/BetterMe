@@ -5,7 +5,7 @@
     .controller("profileController", profileController);
 
 
-  function profileController($routeParams, $location, currentUser, UserService) {
+  function profileController($location, currentUser, UserService) {
     var vm = this;
     vm.userId = currentUser._id;
     vm.user = currentUser;
@@ -40,15 +40,20 @@
 
     function updateUser(form) {
       if(!form.$valid && vm.password1 === vm.password2) {
-        vm.error = "Please make sure that all the fields are valid."
+        vm.error = "Please make sure that all the fields are valid.";
         return;
       }
-      vm.user.password = vm.password1;
+      if (vm.password1) {
+        vm.user.password = vm.password1;
+      } else {
+        delete vm.user.password;
+      }
       UserService
         .updateUser(vm.userId, vm.user)
         .success(function (user)  {
           vm.user = user;
           vm.user.dateOfBirth = displayDate(currentUser.dateOfBirth)
+          $location.url("/user/"+vm.user._id);
         });
     }
 

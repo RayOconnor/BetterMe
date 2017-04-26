@@ -25,7 +25,8 @@ input.form-control {
 }
 
 body {
-  padding: 60px 0;
+  padding-top: 60px;
+  padding-bottom: 15px;
 }
 
 h3.nav-header {
@@ -110,14 +111,13 @@ div.banner-jumbotron {
   background-color: #4ec5c1;
   padding-top: 15px;
   padding-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 h1.banner-title {
   text-align: center;
   color: #ffffff;
 }
-
-
 
 h2.banner-sub {
   text-align: center;
@@ -127,7 +127,7 @@ h2.banner-sub {
 div.landing-info-banner {
 
   margin: 0px;
-  margin-top: 30px;
+  margin-top: 15px;
   padding-top: 15px;
   padding-bottom: 15px;
   border-radius: 4px;
@@ -146,6 +146,10 @@ div.b3 {
   background-color: #4ec5c1;
 }
 
+div.ta-editor {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
 /*
 aqua  color: #4ec5c1;

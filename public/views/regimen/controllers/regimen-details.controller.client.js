@@ -109,7 +109,6 @@
       return $sce.trustAsHtml(html);
     }
 
-
     function getPrettyFrequency() {
       if (!vm.regimen) {
         return "";
@@ -123,6 +122,5 @@
           return "Yearly";
       }
     }
-
   }
 })();
