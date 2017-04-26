@@ -3,15 +3,15 @@
     .module("BetterMe")
     .controller("regimenFindController", regimenFindController);
 
-  function regimenFindController($routeParams, $location, UserService, RegimenService) {
+  function regimenFindController($location, currentUser, UserService, RegimenService) {
     var vm = this;
-    //vm.userId = $routeParams['uid'];
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
-    vm.redirectToRegimenDetails = redirectToRegimenDetails;
     vm.logout = logout;
+    vm.redirectToRegimenDetails = redirectToRegimenDetails;
     vm.getCommitment = getCommitment;
 
     function init() {
+      initUserInfo();
       vm.searchRegimen = "";
       vm.displayedRegimens = [];
       vm.allRegimens = [];
@@ -40,6 +40,16 @@
       })
     }
 
+    function initUserInfo() {
+      if (currentUser === '0') {
+        vm.isLoggedIn = false;
+        vm.isUserAdmin = false;
+      } else {
+        vm.isLoggedIn = true;
+        vm.isUserAdmin = currentUser.admin;
+      }
+    }
+
     function getCommitment(regimen) {
       return regimen.frequencyNumber + " times " + getPrettyFrequency(regimen.frequencyScope);
     }
@@ -59,7 +69,6 @@
     function redirectToRegimenDetails(regimen) {
       $location.url("/regimen/"+regimen._id);
     }
-    
-    
+
   }
 })();

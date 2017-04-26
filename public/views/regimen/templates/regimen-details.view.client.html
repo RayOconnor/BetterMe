@@ -12,15 +12,22 @@
       <a class="navbar-brand" href="/#/"><i class="fa fa-calendar-check-o"></i> BetterMe</a>
     </div>
 
-    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+    <div ng-if="model.isLoggedIn" class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#/profile">My Profile <span class="sr-only">(current)</span></a></li>
-        <li><a href="#/calendar">My Calendar</a></li>
-        <li class="active"><a href="#/regimen">My Regimens</a></li>
-        <li><a href="#/invite">My Invites</a></li>
+        <li><a href="#/profile">Profile <span class="sr-only">(current)</span></a></li>
+        <li><a href="#/calendar">Calendar</a></li>
+        <li><a href="#/regimen">Regimens</a></li>
+        <li><a href="#/invite">Invites</a></li>
         <li><a href="#/regimen/find">Find Regimens</a></li>
         <li ng-if="model.isUserAdmin"><a href="#/admin">Admin</a></li>
         <li><a href="" ng-click="model.logout()">Logout</a></li>
+      </ul>
+    </div>
+    <div ng-if="!model.isLoggedIn" class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-2">
+      <ul class="nav navbar-nav">
+        <li><a href="#/regimen/find">Find Regimens</a></li>
+        <li><a href="#/register">Register</a></li>
+        <li><a href="#/login">Login</a></li>
       </ul>
     </div>
   </div>
