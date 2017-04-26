@@ -3,7 +3,7 @@
     .module("BetterMe")
     .controller("regimenDetailsController", regimenDetailsController);
 
-  function regimenDetailsController($routeParams, $location, $sce, currentUser, RegimenService, UserService) {
+  function regimenDetailsController($rootScope, $routeParams, $location, $sce, currentUser, RegimenService, UserService) {
     var vm = this;
     vm.regimenId = $routeParams.rid;
     vm.userId = currentUser._id;
@@ -11,7 +11,6 @@
     vm.enlistUser = enlistUser;
     vm.unEnlistUser = unEnlistUser;
     vm.getTrustedHtml = getTrustedHtml;
-    vm.isRegimenCoach = isRegimenCoach;
     vm.displayDate = displayDate;
     vm.updateRegimen = updateRegimen;
     vm.deleteRegimen = deleteRegimen;
@@ -22,18 +21,11 @@
       var promise = RegimenService.findRegimenById(vm.regimenId);
       promise.success(function (regimen) {
         renderRegimen(regimen);
-        vm.isUserEnlisted = setEnlisted();
+        initUserInfo(regimen);
       });
     }
 
     init();
-
-    function renderRegimen(regimen) {
-      regimen.start = displayDate(regimen.start);
-      regimen.end = displayDate(regimen.end);
-      vm.regimen = regimen;
-      vm.isCoach = vm.userId === regimen._coach;
-    }
     
     function deleteRegimen() {
       RegimenService
@@ -66,18 +58,6 @@
           });
     }
 
-    function isRegimenCoach(coach) {
-      return vm.userId === coach;
-    }
-
-    function setEnlisted() {
-      return vm.regimen.cadettes.includes(vm.userId);
-    }
-
-    function getTrustedHtml(html) {
-      return $sce.trustAsHtml(html);
-    }
-    
     function enlistUser() {
       UserService
         .enlistUser(vm.userId, vm.regimenId)
@@ -85,6 +65,12 @@
           renderRegimen(regimen);
           $location.url("/regimen");
         });
+    }
+
+    function renderRegimen(regimen) {
+      regimen.start = displayDate(regimen.start);
+      regimen.end = displayDate(regimen.end);
+      vm.regimen = regimen;
     }
 
     function unEnlistUser() {
@@ -104,18 +90,36 @@
       return curr_month + "/" + curr_date + "/" + curr_year;
     }
 
-    function getPrettyFrequency() {
-      if (vm.regimen) {
-        switch (vm.regimen.frequencyScope) {
-          case "D":
-            return "Daily";
-          case "W":
-            return "Weekly";
-          default:
-            return "Yearly";
-        }
+    function initUserInfo(regimen) {
+      if (currentUser === '0') {
+        vm.isLoggedIn = false;
+        vm.isUserAdmin = false;
+        vm.isAuthorizedToEdit = false;
+        vm.isUserEnlisted = false;
       } else {
+        vm.isLoggedIn = true;
+        vm.isUserAdmin = currentUser.admin;
+        vm.isAuthorizedToEdit = vm.isUserAdmin || vm.userId === regimen._coach;
+        vm.isUserEnlisted = regimen.cadettes.includes(vm.userId);
+      }
+
+    }
+
+    function getTrustedHtml(html) {
+      return $sce.trustAsHtml(html);
+    }
+
+    function getPrettyFrequency() {
+      if (!vm.regimen) {
         return "";
+      }
+      switch (vm.regimen.frequencyScope) {
+        case "D":
+          return "Daily";
+        case "W":
+          return "Weekly";
+        default:
+          return "Yearly";
       }
     }
   }

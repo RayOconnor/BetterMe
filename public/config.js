@@ -45,7 +45,7 @@
         controller: 'regimenFindController',
         controllerAs: 'model',
         resolve: {
-          currentUser: checkLogin
+          currentUser: checkLoginForUnrestrictedPages
         }
       })
       .when("/regimen", {
@@ -69,7 +69,7 @@
         controller: 'regimenDetailsController',
         controllerAs: 'model',
         resolve: {
-          currentUser: checkLogin
+          currentUser: checkLoginForUnrestrictedPages
         }
       })
       .when("/invite", {
@@ -118,11 +118,21 @@
       .loggedin()
       .then(function (user) {
         if(user == '0') {
-          deffered.reject();
+          deffered.resolve();
           $location.url('/login')
         } else {
           deffered.resolve(user);
         }
+      });
+    return deffered.promise;
+  }
+
+  function checkLoginForUnrestrictedPages($q, UserService) {
+    var deffered = $q.defer();
+    UserService
+      .loggedin()
+      .then(function (user) {
+        deffered.resolve(user);
       });
     return deffered.promise;
   }

@@ -54,7 +54,7 @@
           allDay: false
         };
 
-        calendar.fullCalendar('renderEvent', editedEvent);
+        calendar.fullCalendar('renderEvent', editedEvent, true);
         EventService.createEventForUser(editedEvent, vm.user._id);
       }
       calendar.fullCalendar('unselect');
@@ -67,7 +67,7 @@
     }
     
     function deleteEvent(event) {
-      EventService.deleteEvent(event._id)
+      EventService.deleteEvent(event._id);
       vm.calendar.fullCalendar('removeEvents', event._id);
 
     }
@@ -81,19 +81,18 @@
           });
     }
 
-    function getJsonForEvent(event) {
-      return JSON.stringify(sanitizeEvent(event));
-    }
-
     function moveEvent(event) {
       EventService
         .moveEvent(event)
         .success(function () {
           init();
         });
-
     }
-
+    
+    function getJsonForEvent(event) {
+      return JSON.stringify(sanitizeEvent(event));
+    }
+    
     function updateDisplayedBankedEvents() {
       var view = vm.calendar.fullCalendar( 'getView' );
       vm.displayedBankedEvents = vm.user.bankedEvents.filter(function (event) {

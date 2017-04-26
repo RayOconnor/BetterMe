@@ -5,9 +5,16 @@
 
   function registerController(UserService, $location, $rootScope) {
     var vm = this;
-    
-    vm.register = function(user, form) {
-      if(!form.$valid) {
+    vm.register = register;
+
+    function init() {
+      vm.user = {};
+    }
+
+    init();
+
+    function register(user, form) {
+      if (!form.$valid) {
         vm.error = "Please make sure that all the fields are valid."
         return;
       }
@@ -16,23 +23,6 @@
         .then(function (user) {
           $rootScope.currentUser = user;
           $location.url("/calendar");
-        });
-    };
-    
-    vm.createUser = function(user, form) {
-      if(!form.$valid) {
-        vm.error = "Please make sure that all the fields are valid."
-        return;
-      }
-
-      UserService
-        .createUser(user)
-        .success(function (registerUser) {
-          if (registerUser != null) {
-            $location.url("/calendar");
-          } else {
-            vm.error = 'user not found';
-          }
         });
     }
   }

@@ -3,18 +3,18 @@
     .module("BetterMe")
     .controller("regimenFindController", regimenFindController);
 
-  function regimenFindController($routeParams, $location, UserService, RegimenService) {
+  function regimenFindController($location, currentUser, UserService, RegimenService) {
     var vm = this;
-    //vm.userId = $routeParams['uid'];
     vm.updateDisplayedRegimens = updateDisplayedRegimens;
-    vm.getCommitment = getCommitment;
-    vm.redirectToRegimenDetails = redirectToRegimenDetails;
     vm.logout = logout;
-    vm.searchRegimen = "";
-    vm.displayedRegimens = [];
-    vm.allRegimens = [];
+    vm.redirectToRegimenDetails = redirectToRegimenDetails;
+    vm.getCommitment = getCommitment;
 
     function init() {
+      initUserInfo();
+      vm.searchRegimen = "";
+      vm.displayedRegimens = [];
+      vm.allRegimens = [];
       var promise = RegimenService.findAllRegimens();
       promise.success(function (regimens) {
         vm.displayedRegimens = regimens;
@@ -24,8 +24,13 @@
 
     init();
 
-    function getCommitment(regimen) {
-      return regimen.frequencyNumber + " times " + getPrettyFrequency(regimen.frequencyScope);
+    function logout() {
+      UserService
+        .logout()
+        .then(
+          function () {
+            $location.url("/");
+          });
     }
 
     function updateDisplayedRegimens() {
@@ -35,14 +40,20 @@
       })
     }
 
-    function logout() {
-      UserService
-        .logout()
-        .then(
-          function () {
-            $location.url("/");
-          });
+    function initUserInfo() {
+      if (currentUser === '0') {
+        vm.isLoggedIn = false;
+        vm.isUserAdmin = false;
+      } else {
+        vm.isLoggedIn = true;
+        vm.isUserAdmin = currentUser.admin;
+      }
     }
+
+    function getCommitment(regimen) {
+      return regimen.frequencyNumber + " times " + getPrettyFrequency(regimen.frequencyScope);
+    }
+
 
     function getPrettyFrequency(scope) {
       switch (scope) {
@@ -58,7 +69,6 @@
     function redirectToRegimenDetails(regimen) {
       $location.url("/regimen/"+regimen._id);
     }
-    
-    
+
   }
 })();
