@@ -54,7 +54,7 @@
           allDay: false
         };
 
-        calendar.fullCalendar('renderEvent', editedEvent);
+        calendar.fullCalendar('renderEvent', editedEvent, true);
         EventService.createEventForUser(editedEvent, vm.user._id);
       }
       calendar.fullCalendar('unselect');
@@ -67,7 +67,7 @@
     }
     
     function deleteEvent(event) {
-      EventService.deleteEvent(event._id)
+      EventService.deleteEvent(event._id);
       vm.calendar.fullCalendar('removeEvents', event._id);
 
     }
