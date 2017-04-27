@@ -103,7 +103,7 @@ module.exports = function () {
     var d = q.defer();
 
     RegimenModel
-      .findOneAndRemove(regimenId, function (err, regimen) {
+      .findOneAndRemove({_id: regimenId}, function (err, regimen) {
         if(err) {
           d.reject(err);
         } else {
