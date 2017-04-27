@@ -55,7 +55,7 @@
            text-angular
            ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
               ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
-              ['indent','outdent'],['html', 'insertLink', 'insertImage', 'insertVideo']]">
+              ['indent','outdent'],['html', 'insertLink', 'insertImage']]">
       </div>
 
       <label for="email">Email</label>
@@ -81,6 +81,7 @@
       <label>
         <input ng-model="model.user.admin" type="checkbox" value="true"> Make user an Admin?
       </label>
+      <br/>
       <label for="password1">New Password</label>
       <input class="form-control"
              type="password"
@@ -97,7 +98,7 @@
              placeholder="Confirm Password"
              ng-model="model.password2"/>
 
-      <label>GoogleCalendarId</label>
+      <label>Google Calendar Id</label>
       <a href="#/google-calendar-help"> <i class="fa fa-info-circle" aria-hidden="true"></i> </a>
       <input ng-model="model.user.googleCalendarId"
              id="googlCalendarId"
