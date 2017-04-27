@@ -14,7 +14,7 @@
             $location.url('/calendar');
           }
         }, function () {
-          model.error = "Your email and password, don't appear to be in our systems, please make sure they are correct.";
+          vm.error = "Your email and password, don't appear to be in our systems, please make sure they are correct.";
         });
     }
   }
